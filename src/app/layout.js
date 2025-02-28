@@ -8,7 +8,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`antialiased overflow-hidden`}>{children}</body>
+      <body className={`antialiased sm:overflow-hidden overflow-auto`}>
+        {children}
+      </body>
     </html>
   );
 }
