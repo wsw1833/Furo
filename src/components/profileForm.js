@@ -14,10 +14,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Select } from './ui/select';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
-  name: z
+  petName: z
     .string()
     .min(2, {
       message: 'Name must be at least 2 characters.',
@@ -25,24 +26,16 @@ const formSchema = z.object({
     .max(50, {
       message: 'Name must not exceed 50 characters.',
     }),
+  WalletAddress: z.string(),
   email: z.string().email({
     message: 'Please enter a valid email address.',
   }),
-  phone: z
-    .string()
-    .regex(/^\d{10}$/, {
-      message: 'Please enter a valid 10-digit phone number.',
-    })
-    .optional()
-    .or(z.literal('')),
-  subject: z
-    .string()
-    .min(5, {
-      message: 'Subject must be at least 5 characters.',
-    })
-    .max(100, {
-      message: 'Subject must not exceed 100 characters.',
-    }),
+  petType: z.string(),
+  petBreed: z.string().min(3, {
+    message: 'Pet Breed must be at least 2 characters.',
+  }),
+  birthDay: z.string().date(),
+  petImage: z.any(),
 });
 
 export default function ContactForm() {
@@ -50,10 +43,13 @@ export default function ContactForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      petName: '',
+      WalletAddress: '',
       email: '',
-      phone: '',
-      subject: '',
+      petType: '',
+      petBreed: '',
+      birthDay: '',
+      petImage: '',
     },
   });
 
@@ -75,15 +71,29 @@ export default function ContactForm() {
   return (
     <div className="mt-10">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="name"
+            name="petName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Name of Your Pet</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input placeholder="Your Pet's Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="walletAddress"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Owner's Wallet Address</FormLabel>
+                <FormControl>
+                  <Input placeholder="" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,11 +105,27 @@ export default function ContactForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="john.doe@example.com"
-                    type="email"
+                  <Input placeholder="welovepets@gmail.com" {...field} />
+                </FormControl>
+                <FormDescription>
+                  only accept gmail for current phase.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="petType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Choose Your Pet Type</FormLabel>
+                <FormControl>
+                  <Select
+                    placeholder="Inquiry about your services"
                     {...field}
                   />
                 </FormControl>
@@ -110,16 +136,13 @@ export default function ContactForm() {
 
           <FormField
             control={form.control}
-            name="phone"
+            name="petBreed"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone (optional)</FormLabel>
+                <FormLabel>Tell Us Your Pet's Breed</FormLabel>
                 <FormControl>
-                  <Input placeholder="1234567890" {...field} />
+                  <Input {...field} />
                 </FormControl>
-                <FormDescription>
-                  10-digit number without spaces or dashes
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -127,12 +150,26 @@ export default function ContactForm() {
 
           <FormField
             control={form.control}
-            name="subject"
+            name="birthDay"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Subject</FormLabel>
+                <FormLabel>When Is Your Pet's Birthday?</FormLabel>
                 <FormControl>
-                  <Input placeholder="Inquiry about your services" {...field} />
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="petImage"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Show Us Your Pet!</FormLabel>
+                <FormControl>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
