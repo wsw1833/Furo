@@ -3,7 +3,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import card from '@images/card.png';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { CalendarIcon } from 'lucide-react';
+import ImageUploadPreview from './uploader';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 import {
   Form,
   FormControl,
@@ -14,7 +20,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select } from './ui/select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from './ui/select';
+import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
+import { Calendar } from './ui/calendar';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
@@ -34,11 +48,11 @@ const formSchema = z.object({
   petBreed: z.string().min(3, {
     message: 'Pet Breed must be at least 2 characters.',
   }),
-  birthDay: z.string().date(),
+  birthDay: z.date({ required_error: "Your pet's birthday is required." }),
   petImage: z.any(),
 });
 
-export default function ContactForm() {
+export default function profileForm() {
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -48,7 +62,7 @@ export default function ContactForm() {
       email: '',
       petType: '',
       petBreed: '',
-      birthDay: '',
+      birthDay: undefined,
       petImage: '',
     },
   });
@@ -58,18 +72,12 @@ export default function ContactForm() {
     // This would typically send the form data to an API
     console.log(values);
 
-    // Show success toast
-    // toast({
-    //   title: 'Form submitted!',
-    //   description: "We'll get back to you shortly.",
-    // });
-
     // Reset the form
     form.reset();
   }
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 w-full">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -79,7 +87,11 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Name of Your Pet</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your Pet's Name" {...field} />
+                  <Input
+                    placeholder="Your Pet's Name"
+                    {...field}
+                    className={'sm:text-base text-sm'}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -93,7 +105,12 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Owner's Wallet Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Input
+                    disabled
+                    placeholder={'hihih'}
+                    {...field}
+                    className={'bg-zinc-100 sm:text-base text-xs'}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -107,7 +124,11 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="welovepets@gmail.com" {...field} />
+                  <Input
+                    placeholder="welovepets@gmail.com"
+                    {...field}
+                    className={'w-[60%] sm:text-base text-sm'}
+                  />
                 </FormControl>
                 <FormDescription>
                   only accept gmail for current phase.
@@ -123,12 +144,21 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Choose Your Pet Type</FormLabel>
-                <FormControl>
-                  <Select
-                    placeholder="Inquiry about your services"
-                    {...field}
-                  />
-                </FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className={'w-[50%] sm:text-sm text-xs'}>
+                      <SelectValue placeholder="Select Your Pet Type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Dog">Dog</SelectItem>
+                    <SelectItem value="Cat">Cat</SelectItem>
+                    <SelectItem value="Hamster">Hamster</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -141,7 +171,11 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Tell Us Your Pet's Breed</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    placeholder="Your Pet's Breed"
+                    {...field}
+                    className={'w-[60%] sm:text-base text-sm'}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -154,9 +188,37 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>When Is Your Pet's Birthday?</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'w-[240px] pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {field.value ? (
+                          format(new Date(field.value), 'PPP')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1900-01-01')
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
@@ -169,15 +231,22 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Show Us Your Pet!</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <ImageUploadPreview
+                    onChange={(file) => {
+                      field.onChange(file);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <Button type="submit" className="w-full">
-            Submit
+          <Button
+            type="submit"
+            className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
+          >
+            Create
+            <Image src={card} alt="card" className="w-fit h-fit" />
           </Button>
         </form>
       </Form>
