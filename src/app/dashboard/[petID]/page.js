@@ -1,7 +1,7 @@
 export default function dashboard({ children }) {
   return (
     <div className="">
-      <div>dashboardpage</div>
+      <div className="m-6">dashboardpage</div>
     </div>
   );
 }
