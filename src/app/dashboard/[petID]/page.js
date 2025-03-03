@@ -70,19 +70,19 @@ const items = [
 
 export default function dashboard() {
   return (
-    <div className="container w-full h-full">
-      <div className="m-4 grid md:grid-cols-9 md:grid-rows-2 grid-cols-2 grid-rows-10 h-full gap-2">
-        <div className="md:col-span-3 md:row-span-2 col-span-2 row-span-2 bg-[#FFFFFD] mb-8 w-full rounded-[24px] p-4">
+    <div className="container w-full lg:h-full h-max">
+      <div className="m-4 grid lg:grid-cols-9 lg:grid-rows-2 grid-cols-2 flex-row h-full gap-2">
+        <div className="lg:col-span-3 lg:row-span-2 col-span-2 row-span-1 bg-[#FFFFFD] lg:mb-8 w-full rounded-[24px] p-4">
           <div className="flex flex-row items-center justify-start gap-2 mb-2">
-            <Image src={clock} alt="clock" className="md:w-8 md:h-8 w-6 h-6" />
-            <p className="font-semibold md:text-2xl text-xl">
+            <Image src={clock} alt="clock" className="xl:w-8 xl:h-8 w-7 h-7" />
+            <p className="font-semibold xl:text-2xl text-xl">
               Most Recent Activity
             </p>
           </div>
           <ActivityPage items={items} />
         </div>
         {/* pet profile */}
-        <div className="md:col-span-3 md:row-span-1 col-span-2 row-span-2 flex flex-col w-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
+        <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 flex flex-col w-full h-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
           <div className="flex flex-row w-full items-center justify-start gap-2 p-4">
             <Image
               src={Petpaw}
@@ -91,13 +91,13 @@ export default function dashboard() {
             />
             <p className="font-semibold md:text-2xl text-xl">Profile</p>
           </div>
-          <div className="flex items-center justify-center w-full">
+          <div className="flex relative flex-col items-center justify-center w-full">
             <Image
               src={dog}
               alt="petImage"
-              className="lg:w-60 lg:h-60 md:w-50 md:h-50 w-36 h-36 mb-12 md:fixed"
+              className="xl:w-60 xl:h-60 lg:w-50 lg:h-50 w-56 h-56 mb-12 lg:absolute"
             />
-            <div className="z-1 w-full md:mt-30 h-max relative bg-white/10 backdrop-blur-sm rounded-[30px]">
+            <div className="z-1 w-full xl:mt-30 lg:mt-27 h-full relative bg-white/10 backdrop-blur-sm rounded-[30px]">
               <div className="flex flex-col justify-between p-4 row w-full h-full">
                 <div className="flex flex-row justify-between">
                   <p className="font-semibold md:text-xl text-lg ">Angel</p>
@@ -116,10 +116,10 @@ export default function dashboard() {
             </div>
           </div>
         </div>
-        <div className="md:col-span-3 md:row-span-1 col-span-2 row-span-2 bg-[#FFFFFD] rounded-[24px] p-4">
+        <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] rounded-[24px] p-4 h-full md:mb-8 mb-4 ">
           <QRBox />
         </div>
-        <div className="md:col-span-4 md:row-span-1 col-span-2 row-span-2 bg-[#FFFFFD] mb-8 rounded-[24px] p-4">
+        <div className="lg:col-span-4 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px] p-4 h-max">
           <div className="flex flex-row items-center justify-start gap-2 mb-2">
             <Image
               src={notify}
@@ -130,7 +130,7 @@ export default function dashboard() {
           </div>
           <RemindBox items={items} />
         </div>
-        <div className="md:col-span-2 md:row-span-1 col-span-2 row-span-2 bg-[#FFFFFD] mb-8 rounded-[24px] p-4">
+        <div className="lg:col-span-2 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px]">
           <CarouselBox />
         </div>
       </div>

@@ -9,7 +9,15 @@ export default function activity({ items }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const checkScreenSize = () => {
-        setIsMobile(window.innerWidth < 768);
+        if (window.innerWidth < 1024) {
+          setIsMobile(4);
+        } else if (window.innerWidth < 1280) {
+          setIsMobile(3);
+        } else if (window.innerWidth < 1376) {
+          setIsMobile(5);
+        } else {
+          setIsMobile(7);
+        }
       };
 
       checkScreenSize();
@@ -31,26 +39,31 @@ export default function activity({ items }) {
     );
   }
 
-  const itemsToShow = isMobile ? 4 : 7;
-  const limitedItems = items.slice(0, itemsToShow);
+  const limitedItems = items.slice(0, isMobile);
 
   return (
     <div className="container flex flex-col w-full h-max">
       {limitedItems.map((item, index) => (
         <div
           key={index}
-          className={`w-full flex flex-row items-center justify-between mt-2 py-1 px-4 my-3 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
+          className={`w-full h-full flex xl:flex-row xl:justify-between lg:flex-col lg:justify-center flex-row items-center justify-between mt-2 xl:py-1 py-4 xl:px-4 px-6 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <Image
             src={item.img}
             alt="activities"
-            className="md:w-8 md:h-8 w-6 h-6"
+            className="lg:w-8 lg:h-8 w-10 h-10"
           />
-          <div className="flex flex-col h-max">
-            <p className="w-max font-medium md:text-lg">{item.act}</p>
-            <p className="w-max font-light md:text-sm">{item.loc}</p>
+          <div className="flex flex-col h-max xl:items-start lg:items-center items-start">
+            <p className="w-max font-medium xl:text-lg lg:text-base">
+              {item.act}
+            </p>
+            <p className="w-max font-light xl:text-sm md:text-xs text-base">
+              {item.loc}
+            </p>
           </div>
-          <p className="font-medium w-max">{item.date}</p>
+          <p className="font-medium w-max text-base flex justify-end">
+            {item.date}
+          </p>
         </div>
       ))}
     </div>

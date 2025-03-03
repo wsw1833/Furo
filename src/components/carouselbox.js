@@ -22,14 +22,14 @@ export default function carouselBox() {
     <div className="w-full h-full flex items-center justify-center">
       <Carousel
         plugins={[plugin.current]}
-        className="w-full max-w-xs"
+        className="w-full max-w-xs p-0 items-center justify-center"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
           {Array.from({ length: 4 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div className="w-full h-full flex items-center aspect-auto justify-center">
+              <div className="lg:w-full lg:h-full md:w-30 md:h-30 w-max h-max flex items-center aspect-auto justify-center">
                 <Image src={items[index]} alt="images" className="" />
               </div>
             </CarouselItem>
