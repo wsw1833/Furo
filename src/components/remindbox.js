@@ -19,7 +19,7 @@ export default function remindBox({ items }) {
       {limitedItems.map((item, index) => (
         <div
           key={index}
-          className={`w-full flex flex-row xl:items-center xl:justify-between lg:justify-start lg:items-center justify-between items-center px-4 py-1 my-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
+          className={`w-full flex flex-row xl:items-center xl:justify-between lg:justify-between lg:items-center justify-between items-center px-4 py-1 my-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <span className="w-2 h-2 rounded-full bg-[#FFC65C]"></span>
           <Image

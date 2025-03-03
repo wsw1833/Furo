@@ -9,13 +9,14 @@ import logout from '@images/logout.png';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { ChevronDown } from 'lucide-react';
-import { usePathname, useParams } from 'next/navigation';
+import { usePathname, useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function sidebar() {
   const pathname = usePathname(); // Or router.pathname if using Pages Router
   const params = useParams();
   const petID = params.petID;
+  const router = useRouter();
   const navItems = [
     {
       name: 'Homepage',
@@ -44,9 +45,13 @@ export default function sidebar() {
     return pathname.includes(path);
   };
 
-  const switchPetHandler = () => {};
+  const switchPetHandler = () => {
+    router.push('/profile');
+  };
 
-  const signOutHandler = () => {};
+  const signOutHandler = () => {
+    //return back to hero page and disconnect wallet.
+  };
 
   return (
     <div className="w-max h-screen flex flex-col items-start justify-start ml-6 lg:flex hidden">
@@ -82,6 +87,7 @@ export default function sidebar() {
         </Link>
       ))}
       <Button
+        onClick={switchPetHandler}
         className={
           'w-[90%] p-4 mt-2 flex flex-row items-center justify-start rounded-[20px] shadow-none hover:bg-[#FFC65C] bg-[#FFFFFD] text-[#181818] active:bg-[#F89D47] transition hover:duration-300 font-medium sm:text-xl text-lg'
         }

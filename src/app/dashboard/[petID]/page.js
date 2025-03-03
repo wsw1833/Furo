@@ -11,60 +11,96 @@ import notify from '@images/notify-yellow.png';
 import petHealth from '@images/deworm.png';
 import Image from 'next/image';
 
-const items = [
+export const items = [
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://www.google.com',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
   {
     img: petHealth,
     act: 'pet health',
     loc: 'sea park animal polyclinic',
     date: '2 mar 2025',
+    weight: 5,
+    condition: 'Good',
+    user: '0x00...0000',
+    url: 'https://',
   },
 ];
 
@@ -79,7 +115,7 @@ export default function dashboard() {
               Most Recent Activity
             </p>
           </div>
-          <ActivityPage items={items} />
+          <ActivityPage items={items} display={false} />
         </div>
         {/* pet profile */}
         <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 flex flex-col w-full h-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
