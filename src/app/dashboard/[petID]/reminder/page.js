@@ -1,20 +1,24 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import add from '@images/add-button.png';
 import notification from '@images/notify-yellow.png';
+import RemindBox from '@/components/remindbox';
 import { Button } from '@/components/ui/button';
+import { items } from '../page';
 export default function reminderPage() {
   return (
-    <div className="container flex w-full h-full overflow-auto">
-      <div className="m-4 flex flex-col w-full h-full gap-2 bg-[#FFFFFD] rounded-[24px]">
-        <div className="flex flex-col w-full h-max items-center justify-center mt-6 gap-2">
+    <div className="container flex w-full h-full">
+      <div className="m-4 flex flex-col w-full h-full mb-20 gap-2 bg-[#FFFFFD] rounded-[24px]">
+        <div className="flex flex-row w-full h-max items-center justify-center mt-6 gap-2">
           <Image
             src={notification}
             alt="notification"
             className="md:w-12 md:h-12 w-10 h-10"
           />
           <p className="font-semibold xl:text-3xl text-2xl">
-            Most Recent Activity
+            Set Your Reminder
           </p>
         </div>
         <div className="w-full flex flex-row items-center justify-center">
@@ -27,7 +31,9 @@ export default function reminderPage() {
             Add Record
           </Button>
         </div>
-        <div className="w-full lg:px-20 flex items-center justify-center overflow-auto"></div>
+        <div className="w-full lg:px-20 grid h-full items-center justify-center overflow-y-auto mb-4">
+          <RemindBox items={items} display={true} />
+        </div>
       </div>
     </div>
   );

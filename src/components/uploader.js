@@ -67,7 +67,7 @@ export default function ImageUploadPreview({ onChange }) {
             <Button
               type="button"
               onClick={handleClick}
-              className="text-sm text-blue-600 hover:text-blue-800"
+              className="text-sm text-blue-600 hover:text-blue-800 bg-white hover:bg-white shadow-none"
             >
               Change Image
             </Button>

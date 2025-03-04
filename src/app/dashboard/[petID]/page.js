@@ -164,7 +164,7 @@ export default function dashboard() {
             />
             <p className="font-semibold md:text-2xl text-xl">Reminder</p>
           </div>
-          <RemindBox items={items} />
+          <RemindBox items={items} display={false} />
         </div>
         <div className="lg:col-span-2 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px]">
           <CarouselBox />

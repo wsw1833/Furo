@@ -9,6 +9,7 @@ import logout from '@images/logout.png';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { ChevronDown } from 'lucide-react';
+import member from '@images/profile.png';
 import { usePathname, useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -35,6 +36,12 @@ export default function sidebar() {
       path: `/dashboard/${petID}/reminder`,
       icon: notify,
       alt: 'notification',
+    },
+    {
+      name: 'Member',
+      path: `/dashboard/${petID}/member`,
+      icon: member,
+      alt: 'member',
     },
   ];
 

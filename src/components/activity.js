@@ -53,7 +53,11 @@ export default function activity({ items, display }) {
   }
 
   return (
-    <div className="container flex flex-col w-full h-max">
+    <div
+      className={`${
+        display ? 'h-full' : 'h-max'
+      } container flex flex-col w-full`}
+    >
       {limitedItems.map((item, index) => (
         <div
           key={index}

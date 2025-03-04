@@ -8,8 +8,8 @@ import { items } from '../page';
 
 export default function recordPage() {
   return (
-    <div className="flex w-full h-full overflow-auto">
-      <div className="m-4 flex flex-col w-full h-max gap-2 bg-[#FFFFFD] rounded-[24px]">
+    <div className="container flex w-full h-full">
+      <div className="m-4 flex flex-col w-full h-full gap-2 bg-[#FFFFFD] rounded-[24px]">
         <div className="flex flex-row w-full h-max items-center justify-center mt-6 gap-2">
           <Image
             src={petHealth}
@@ -30,7 +30,7 @@ export default function recordPage() {
             Add Record
           </Button>
         </div>
-        <div className="w-full lg:px-20 px-8 flex items-center justify-center overflow-auto">
+        <div className="w-full h-full lg:px-20 px-8 flex items-center justify-center overflow-auto mb-4">
           <ActivityPage items={items} display={true} />
         </div>
       </div>
