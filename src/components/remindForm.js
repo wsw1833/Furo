@@ -3,17 +3,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import card from '@images/card.png';
+import remind from '@images/reminder.png';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
@@ -23,30 +26,26 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
+import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
+import { Calendar } from './ui/calendar';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
   activity: z.string({
     required_error: 'Please select an activity for your pet.',
   }),
-  location: z.string(),
-  walletAddress: z.string(),
-  petWeight: z.coerce.number({
-    required_error: `Please enter your pet's weight`,
-  }),
-  condition: z.string({ required_error: `Your pet's condition is required.` }),
+  location: z.string({ required_error: 'Location place is required.' }),
+  appointmentDate: z.date({ required_error: 'Appointment date is required.' }),
 });
 
-export default function addRecordForm() {
+export default function reminderForm() {
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       activity: undefined,
-      location: '',
-      walletAddress: '',
-      petWeight: z.number,
-      condition: undefined,
+      location: undefined,
+      appointmentDate: undefined,
     },
   });
 
@@ -103,10 +102,9 @@ export default function addRecordForm() {
                 <FormControl>
                   <Input
                     placeholder="Enter The Location"
-                    disabled
                     {...field}
                     className={
-                      'w-[20rem] bg-zinc-100 sm:text-base text-sm text-center text-[#000000]'
+                      'w-[20rem] sm:text-base text-sm text-center text-[#000000]'
                     }
                   />
                 </FormControl>
@@ -117,69 +115,45 @@ export default function addRecordForm() {
 
           <FormField
             control={form.control}
-            name="walletAddress"
+            name="appointmentDate"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Performed By</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled
-                    placeholder={''}
-                    {...field}
-                    className={
-                      'w-[30rem] bg-zinc-100 sm:text-base text-xs text-center'
-                    }
-                  />
-                </FormControl>
+              <FormItem className={'flex flex-col items-center justify-center'}>
+                <FormLabel>Reminder Schedule Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'w-[12rem] pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {field.value ? (
+                          format(new Date(field.value), 'PPP')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="text-center">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1900-01-01')
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="petWeight"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Pet's Weight</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="KG"
-                    {...field}
-                    className={'w-[10rem] sm:text-base text-sm text-center'}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="condition"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Pet's Condition</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger
-                      className={'w-[20rem] sm:text-sm text-xs justify-center'}
-                    >
-                      <SelectValue placeholder="Select Your Pet Type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Excellent">Excellent</SelectItem>
-                    <SelectItem value="Good">Good</SelectItem>
-                    <SelectItem value="Normal">Normal</SelectItem>
-                    <SelectItem value="Bad">Bad</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
+                <FormDescription className="md:text-sm text-xs flex items-center justify-center mt-1">
+                  An email notification will be sent on the schedule date.
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -189,8 +163,8 @@ export default function addRecordForm() {
               type="submit"
               className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
             >
-              Create
-              <Image src={card} alt="card" className="w-fit h-fit" />
+              Set Reminder
+              <Image src={remind} alt="reminderIcon" className="w-6 h-6" />
             </Button>
           </div>
         </form>
