@@ -13,7 +13,7 @@ import Image from 'next/image';
 
 const items = [loveCare, health, share, track];
 
-export default function carouselBox() {
+export default function CarouselBox() {
   const plugin = React.useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true })
   );

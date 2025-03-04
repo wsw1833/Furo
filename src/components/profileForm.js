@@ -52,7 +52,7 @@ const formSchema = z.object({
   petImage: z.any(),
 });
 
-export default function profileForm() {
+export default function ProfileForm() {
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -103,7 +103,7 @@ export default function profileForm() {
             name="walletAddress"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Owner's Wallet Address</FormLabel>
+                <FormLabel>Owner&apos; Wallet Address</FormLabel>
                 <FormControl>
                   <Input
                     disabled
@@ -169,7 +169,7 @@ export default function profileForm() {
             name="petBreed"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tell Us Your Pet's Breed</FormLabel>
+                <FormLabel>Tell Us Your Pet&apos; Breed</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Your Pet's Breed"
@@ -187,7 +187,7 @@ export default function profileForm() {
             name="birthDay"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>When Is Your Pet's Birthday?</FormLabel>
+                <FormLabel>When Is Your Pet&apos; Birthday?</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>

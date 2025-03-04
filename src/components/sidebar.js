@@ -13,7 +13,7 @@ import member from '@images/profile.png';
 import { usePathname, useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function sidebar() {
+export default function Sidebar() {
   const pathname = usePathname(); // Or router.pathname if using Pages Router
   const params = useParams();
   const petID = params.petID;
@@ -63,7 +63,7 @@ export default function sidebar() {
   return (
     <div className="w-max h-screen flex flex-col items-start justify-start ml-6 lg:flex hidden">
       <div className="line-clamp-2 font-semibold md:text-3xl w-[18rem] items-end">
-        Your Pet's Health, Always in Care
+        Your Pet&apos; Health, Always in Care
         <Image src={love} alt="love" className="w-8 h-8 ml-3 inline-block" />
       </div>
       <div className="flex flex-row mt-8 font-medium md:text-xl items-center justify-between w-[90%]">

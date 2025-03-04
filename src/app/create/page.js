@@ -8,7 +8,7 @@ import Image from 'next/image';
 import ProfileForm from '@/components/profileForm';
 import { useRouter } from 'next/navigation';
 
-export default function create() {
+export default function Create() {
   const router = useRouter();
 
   function backHandler() {
@@ -32,7 +32,7 @@ export default function create() {
           <Image src={star} alt="stars" className="lg:w-12 lg:h-12 w-8 h-8" />
         </p>
         <p className="mt-2 font-medium lg:text-xl sm:text-lg text-base text-[#484848]">
-          to create your pet's digital identity
+          to create your pet&apos; digital identity
         </p>
         <ProfileForm />
       </div>

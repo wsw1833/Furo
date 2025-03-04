@@ -7,7 +7,7 @@ import user from '@images/profile.png';
 import scroll from '@images/scroll.png';
 import Link from 'next/link';
 
-export default function activity({ items, display }) {
+export default function Activity({ items, display }) {
   const [isMobile, setIsMobile] = useState(false);
 
   // Function to determine and update screen size

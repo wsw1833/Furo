@@ -38,7 +38,7 @@ const formSchema = z.object({
   appointmentDate: z.date({ required_error: 'Appointment date is required.' }),
 });
 
-export default function reminderForm() {
+export default function ReminderForm() {
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),

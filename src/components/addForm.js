@@ -37,7 +37,7 @@ const formSchema = z.object({
   condition: z.string({ required_error: `Your pet's condition is required.` }),
 });
 
-export default function addRecordForm() {
+export default function AddRecordForm() {
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -141,7 +141,7 @@ export default function addRecordForm() {
             name="petWeight"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Pet's Weight</FormLabel>
+                <FormLabel>Pet&apos; Weight</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -160,7 +160,7 @@ export default function addRecordForm() {
             name="condition"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Pet's Condition</FormLabel>
+                <FormLabel>Pet&apos; Condition</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}

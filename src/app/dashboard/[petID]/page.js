@@ -104,7 +104,7 @@ export const items = [
   },
 ];
 
-export default function dashboard() {
+export default function Dashboard() {
   return (
     <div className="container w-full lg:h-full h-max">
       <div className="m-4 grid lg:grid-cols-9 lg:grid-rows-2 grid-cols-2 flex-row h-full gap-2">

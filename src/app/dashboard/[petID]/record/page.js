@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
-export default function recordPage() {
+export default function RecordPage() {
   const [open, setOpen] = useState(false);
 
   return (

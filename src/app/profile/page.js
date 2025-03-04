@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { handler } from 'tailwindcss-animate';
 
-export default function profile() {
+export default function ProfilePage() {
   const router = useRouter();
   const petData = [
     {

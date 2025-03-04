@@ -1,6 +1,6 @@
 import Header from '@/components/header';
 import Sidebar from '@/components/sidebar';
-export default function dashboardLayout({ children }) {
+export default function DashboardLayout({ children }) {
   return (
     <div className={`h-screen xl:overflow-hidden overflow-auto`}>
       <Header />

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import QR from '@images/qr.png';
 import QRCODE from '@images/qr-code.png';
 
-export default function qrBox() {
+export default function QrBox() {
   return (
     <div className="container flex flex-col w-full h-full">
       <div className="w-full flex flex-row items-center justify-start gap-2">

@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { items } from '../page';
-export default function reminderPage() {
+export default function ReminderPage() {
   const [open, setOpen] = useState(false);
 
   return (

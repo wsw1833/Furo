@@ -4,7 +4,7 @@ import notify from '@images/notify-yellow.png';
 import addButton from '@images/add-button.png';
 import Image from 'next/image';
 
-export default function pageTitle({ page }) {
+export default function PageTitle({ page }) {
   if (page === 'record') {
     return (
       <div className="flex flex-row w-full h-max items-center justify-center mt-6 gap-2">

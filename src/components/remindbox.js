@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export default function remindBox({ items, display }) {
+export default function RemindBox({ items, display }) {
   // Handle case where items is not an array
   if (!Array.isArray(items)) {
     console.error('Expected items to be an array, but got:', items);
