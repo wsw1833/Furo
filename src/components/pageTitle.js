@@ -34,13 +34,25 @@ export default function PageTitle({ page }) {
   }
   if (page === 'addRecord') {
     return (
-      <div className="flex flex-row w-full h-max items-center justify-center">
+      <div className="flex flex-row w-full h-max items-center justify-center mt-6">
         <Image
           src={addButton}
           alt="addButton"
           className="md:w-14 md:h-14 w-12 h-12"
         />
         <p className="font-semibold xl:text-3xl text-2xl">Add Record</p>
+      </div>
+    );
+  }
+  if (page === 'member') {
+    return (
+      <div className="flex flex-row w-full h-max items-center justify-center mt-6">
+        <Image
+          src={addButton}
+          alt="addButton"
+          className="md:w-14 md:h-14 w-12 h-12"
+        />
+        <p className="font-semibold xl:text-3xl text-2xl">Add Member</p>
       </div>
     );
   }
