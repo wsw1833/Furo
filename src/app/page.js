@@ -6,12 +6,27 @@ import scroll from '@images/scroll.png';
 import metamask from '@images/metamask.png';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
+import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 
 export default function Home() {
+  const { address, isConnected, chain } = useAccount();
+  const { connect, connectors } = useConnect();
+  const { switchChain, chains } = useSwitchChain();
   const router = useRouter();
+
+  useEffect(() => {
+    if (isConnected) {
+      router.push('/profile');
+    }
+  }, [isConnected, router]);
+
   function connectHandler() {
-    //metamask wallet connection (server component)
-    router.push('/profile');
+    if (connectors.length > 0) {
+      connect({ connector: connectors[0] });
+    } else {
+      console.error('No wallet connectors available');
+    }
   }
 
   return (
