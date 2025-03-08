@@ -3,33 +3,44 @@
 import Image from 'next/image';
 import addIcon from '@images/add-button.png';
 import petpaw from '@images/pet-paw.png';
-import dog from '@images/dog.png';
-import hams from '@images/hamster.png';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { handler } from 'tailwindcss-animate';
-
+import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
 export default function ProfilePage() {
+  const { address } = useAccount();
   const router = useRouter();
-  const petData = [
-    {
-      name: 'Angel',
-      type: 'Dog',
-      imgURL: dog,
-      breed: 'Pomeranian',
-    },
-    {
-      name: 'Ball',
-      type: 'Hamster',
-      imgURL: hams,
-      breed: 'Chinese',
-    },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  let [profile, setProfile] = useState([]);
+  const fetchProfile = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/user?walletAddress=${address}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch profiles');
+      }
+      const data = await response.json();
+      setProfile(data.profile);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  function addProfileHandler() {
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const dashboardHandler = (petId) => {
+    localStorage.setItem('selectedPetId', petId);
+    router.push(`/dashboard/${petId}`);
+  };
+
+  const addProfileHandler = () => {
     //create profile with minting process.
     router.push('/create');
-  }
+  };
   return (
     <div className="flex flex-col sm:items-center sm:justify-center h-max w-full">
       <div className="flex flex-col sm:items-center sm:px-0 px-6 justify-center items-start font-inter">
@@ -64,23 +75,34 @@ export default function ProfilePage() {
           ></Image>
         </Button>
       </div>
-      <div className="lg:w-[70%] w-full grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 place-items-center overflow-y-auto">
-        {petData.map((pet) => (
-          <div
-            key={pet.name}
-            className="col-span-1 md:w-40 lg:w-46 w-38 h-70 my-6 bg-white border-2 rounded-[20px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col justify-center items-center hover:bg-[#FFC65C] transition hover:duration-200"
-          >
-            <Image src={pet.imgURL} alt="pet" className="lg:w-40 lg:h-40" />
-            <p className="sm:text-sm font-medium text-xs text-[#484848] pt-1">
-              {pet.type}
-            </p>
-            <p className="sm:text-xl font-semibold mt-2">{pet.name}</p>
-            <p className="sm:text-sm font-medium text-xs text-[#484848] pt-2">
-              {pet.breed}
-            </p>
-          </div>
-        ))}
-      </div>
+      {isLoading && profile.petImage ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="lg:w-[70%] w-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 place-items-center overflow-y-auto">
+          {profile.map((pet) => (
+            <div
+              key={pet._id}
+              onClick={() => dashboardHandler(pet._id)}
+              className="col-span-1 md:w-40 lg:w-46 w-38 h-70 my-6 bg-white border-2 rounded-[20px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col justify-center items-center hover:bg-[#FFC65C] transition hover:duration-200"
+            >
+              <Image
+                src={pet.petImage}
+                width={500}
+                height={500}
+                alt="pet"
+                className="lg:w-40 lg:h-40 md:w-34 md:h-34 w-30 h-30 rounded-[16px]"
+              />
+              <p className="sm:text-sm font-medium text-xs text-[#484848] pt-1">
+                {pet.petType}
+              </p>
+              <p className="sm:text-xl font-semibold mt-2">{pet.petName}</p>
+              <p className="sm:text-sm font-medium text-xs text-[#484848] pt-2">
+                {pet.petBreed}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

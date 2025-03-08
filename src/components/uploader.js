@@ -9,7 +9,7 @@ export default function ImageUploadPreview({ onChange }) {
   const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     // Pass the file to the parent form if onChange prop exists

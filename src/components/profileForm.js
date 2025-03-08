@@ -29,6 +29,8 @@ import {
 } from './ui/select';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { Calendar } from './ui/calendar';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
@@ -40,7 +42,7 @@ const formSchema = z.object({
     .max(50, {
       message: 'Name must not exceed 50 characters.',
     }),
-  WalletAddress: z.string(),
+  walletAddress: z.string(),
   email: z.string().email({
     message: 'Please enter a valid email address.',
   }),
@@ -52,13 +54,15 @@ const formSchema = z.object({
   petImage: z.any(),
 });
 
-export default function ProfileForm() {
+export default function ProfileForm({ addr }) {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       petName: '',
-      WalletAddress: '',
+      walletAddress: addr,
       email: '',
       petType: '',
       petBreed: '',
@@ -67,19 +71,72 @@ export default function ProfileForm() {
     },
   });
 
-  // Define the submit handler
-  function onSubmit(values) {
-    // This would typically send the form data to an API
-    console.log(values);
+  const submitImagS3 = async (petImage) => {
+    try {
+      const formData = new FormData();
+      formData.append('petImage', petImage);
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-    // Reset the form
-    form.reset();
-  }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+
+      const data = await response.json();
+
+      return data.url;
+    } catch (err) {
+      console.error('Error uploading image:', err);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data.petImage);
+    setIsSubmitting(true);
+    try {
+      const imageURL = await submitImagS3(data.petImage);
+      const formData = {
+        ...data,
+        birthDay: data.birthDay.toISOString(),
+        petImage: imageURL,
+      };
+      console.log('Submitting data:', formData);
+      // from here submit image to S3 to get URL
+      const response = await fetch('/api/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || `Server responded with ${response.status}`
+        );
+      }
+      const result = await response.json();
+      console.log(result);
+      router.push(`/dashboard/${result.data._id}`);
+      form.reset();
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="mt-10 w-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          encType="multipart/form-data"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8"
+        >
           <FormField
             control={form.control}
             name="petName"
@@ -103,11 +160,11 @@ export default function ProfileForm() {
             name="walletAddress"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Owner&apos; Wallet Address</FormLabel>
+                <FormLabel>Owner&apos;s Wallet Address</FormLabel>
                 <FormControl>
                   <Input
                     disabled
-                    placeholder={'hihih'}
+                    placeholder={addr}
                     {...field}
                     className={'bg-zinc-100 sm:text-base text-xs'}
                   />
@@ -169,7 +226,7 @@ export default function ProfileForm() {
             name="petBreed"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tell Us Your Pet&apos; Breed</FormLabel>
+                <FormLabel>Tell Us Your Pet&apos;s Breed</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Your Pet's Breed"
@@ -186,15 +243,15 @@ export default function ProfileForm() {
             control={form.control}
             name="birthDay"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>When Is Your Pet&apos; Birthday?</FormLabel>
+              <FormItem className={'w-auto'}>
+                <FormLabel>When Is Your Pet&apos;s Birthday?</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant={'outline'}
                         className={cn(
-                          'w-[240px] pl-3 text-left font-normal',
+                          'w-[240px] justify-start text-left font-normal',
                           !field.value && 'text-muted-foreground'
                         )}
                       >
@@ -243,9 +300,10 @@ export default function ProfileForm() {
           />
           <Button
             type="submit"
+            disabled={isSubmitting}
             className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
           >
-            Create
+            {isSubmitting ? 'Creating...' : 'Create'}
             <Image src={card} alt="card" className="w-fit h-fit" />
           </Button>
         </form>

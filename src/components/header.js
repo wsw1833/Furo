@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import hamburger from '@images/hamburger.png';
 
-export default function Header({ QR }) {
+export default function Header({ addr, QR }) {
   return (
     <div className="w-full flex items-center justify-between p-6">
       <div className="flex flex-row items-center justify-center gap-2">
@@ -30,7 +30,7 @@ export default function Header({ QR }) {
             }`}
         >
           <Image src={metamask} alt="metamask" className="w-fit h-fit" />
-          0x00...1a2bc
+          {addr}
         </Button>
         <Button
           className={`

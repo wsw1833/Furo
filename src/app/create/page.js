@@ -7,8 +7,9 @@ import star from '@images/stars.png';
 import Image from 'next/image';
 import ProfileForm from '@/components/profileForm';
 import { useRouter } from 'next/navigation';
-
+import { useAccount } from 'wagmi';
 export default function Create() {
+  const { address } = useAccount();
   const router = useRouter();
 
   function backHandler() {
@@ -32,9 +33,9 @@ export default function Create() {
           <Image src={star} alt="stars" className="lg:w-12 lg:h-12 w-8 h-8" />
         </p>
         <p className="mt-2 font-medium lg:text-xl sm:text-lg text-base text-[#484848]">
-          to create your pet&apos; digital identity
+          to create your pet&apos;s digital identity
         </p>
-        <ProfileForm />
+        <ProfileForm addr={address} />
       </div>
     </div>
   );

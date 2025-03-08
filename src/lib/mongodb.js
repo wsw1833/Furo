@@ -1,6 +1,8 @@
 // lib/mongodb.js
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
@@ -24,6 +26,7 @@ async function dbConnect() {
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      console.log('connected to mongoDB');
       return mongoose;
     });
   }

@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   },
   walletAddress: {
     type: String,
-    required: [true],
+    required: true,
   },
   email: {
     type: String,
@@ -29,8 +29,12 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Please provide your pet birthday'],
   },
   petImage: {
-    type: Date,
+    type: String,
     required: [true, 'Please provide your pet image in URL'],
+  },
+  IPFS: {
+    type: String,
+    required: false,
   },
   createdAt: {
     type: Date,

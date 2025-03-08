@@ -10,6 +10,7 @@ import clock from '@images/clock.png';
 import notify from '@images/notify-yellow.png';
 import petHealth from '@images/deworm.png';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export const items = [
   {
@@ -105,6 +106,30 @@ export const items = [
 ];
 
 export default function Dashboard() {
+  const [petId, setPetId] = useState(null);
+  const [profile, setProfile] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const id = localStorage.getItem('selectedPetId');
+    setPetId(id);
+    const fetchPetProfile = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/petprofile?petId=${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch pet profile');
+        }
+        const data = await response.json();
+        setProfile(data.profile);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPetProfile();
+  }, [setPetId]);
   return (
     <div className="container w-full lg:h-full h-max">
       <div className="m-4 grid lg:grid-cols-9 lg:grid-rows-2 grid-cols-2 flex-row h-full gap-2">
@@ -118,40 +143,46 @@ export default function Dashboard() {
           <ActivityPage items={items} display={false} />
         </div>
         {/* pet profile */}
-        <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 flex flex-col w-full h-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
-          <div className="flex flex-row w-full items-center justify-start gap-2 p-4">
-            <Image
-              src={Petpaw}
-              alt="petPaw"
-              className="md:w-8 md:h-8 w-6 h-6"
-            />
-            <p className="font-semibold md:text-2xl text-xl">Profile</p>
-          </div>
-          <div className="flex relative flex-col items-center justify-center w-full">
-            <Image
-              src={dog}
-              alt="petImage"
-              className="xl:w-60 xl:h-60 lg:w-50 lg:h-50 w-56 h-56 mb-12 lg:absolute"
-            />
-            <div className="z-1 w-full xl:mt-30 lg:mt-27 h-full relative bg-white/10 backdrop-blur-sm rounded-[30px]">
-              <div className="flex flex-col justify-between p-4 row w-full h-full">
-                <div className="flex flex-row justify-between">
-                  <p className="font-semibold md:text-xl text-lg ">Angel</p>
-                  <p className="w-fit px-6 border-2 rounded-[20px] border-[#FFC65C] md:text-base text-sm">
-                    Dog
+        {!isLoading && (
+          <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 flex flex-col w-full h-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
+            <div className="flex flex-row w-full items-center justify-start gap-2 p-4">
+              <Image
+                src={Petpaw}
+                alt="petPaw"
+                className="md:w-8 md:h-8 w-6 h-6"
+              />
+              <p className="font-semibold md:text-2xl text-xl">Profile</p>
+            </div>
+            <div className="flex relative flex-col items-center justify-center w-full">
+              <Image
+                src={profile.petImage}
+                width={500}
+                height={500}
+                alt="petImage"
+                className="xl:w-60 xl:h-60 lg:w-50 lg:h-50 w-56 h-56 mb-12 lg:absolute rounded-[20px]"
+              />
+              <div className="z-1 w-full xl:mt-30 lg:mt-27 h-full relative bg-white/10 backdrop-blur-sm rounded-[30px]">
+                <div className="flex flex-col justify-between p-4 row w-full h-full">
+                  <div className="flex flex-row justify-between">
+                    <p className="font-semibold md:text-xl text-lg ">
+                      {profile.petName}
+                    </p>
+                    <p className="w-fit px-6 border-2 rounded-[20px] border-[#FFC65C] md:text-base text-sm">
+                      {profile.petType}
+                    </p>
+                  </div>
+                  <p className="font-light mt-1 md:text-base text-sm">
+                    {profile.petBreed}
                   </p>
-                </div>
-                <p className="font-light mt-1 md:text-base text-sm">
-                  Pomeranian
-                </p>
-                <div className="flex flex-row items-center justify-start mt-2 gap-2">
-                  <Image src={cake} alt="birthday" className="w-6 h-6" />
-                  <p className="md:text-lg text-base">1 Jan 2025</p>
+                  <div className="flex flex-row items-center justify-start mt-2 gap-2">
+                    <Image src={cake} alt="birthday" className="w-6 h-6" />
+                    <p className="md:text-lg text-base">{profile.birthDay}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] rounded-[24px] p-4 h-full md:mb-8 mb-4 ">
           <QRBox />
         </div>
