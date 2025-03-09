@@ -45,14 +45,14 @@ export default function RemindBox({ reminders, display }) {
         display
           ? 'grid md:grid-cols-3 grid-cols-2 col-span-1 gap-4'
           : 'flex-col'
-      } w-full flex container h-full xl:mb-0 lg:mb-10`}
+      } w-full flex container h-full xl:mb-0 lg:mb-10 md:p-6`}
     >
       {limitedItems.map((reminder) => (
         <div
           key={reminder._id}
           className={`${
             display ? 'flex flex-col py-4' : 'flex-row '
-          } w-full flex xl:items-center xl:justify-between lg:justify-between lg:items-center justify-between items-center px-4 py-1 my-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
+          } w-full flex xl:items-center xl:justify-between lg:justify-between lg:items-center justify-between items-center md:px-18 px-6 py-1 md:my-8 my-4 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <span
             className={`${
@@ -61,8 +61,10 @@ export default function RemindBox({ reminders, display }) {
           ></span>
           <Image
             src={getActivityIcon(reminder.petActivity)}
+            width={500}
+            height={500}
             alt="activities"
-            className={`${display ? 'mb-4' : ''} lg:w-8 lg:h-8 w-10 h-10`}
+            className={`${display ? 'mb-4' : ''} md:w-10 md:h-10 w-6 h-6`}
           />
           <div
             className={`${
@@ -80,7 +82,9 @@ export default function RemindBox({ reminders, display }) {
           <span> </span>
           <span> </span>
           <span> </span>
-          <div className={`flex flex-col w-max h-max justify-end items-end`}>
+          <div
+            className={`flex flex-col w-max h-max justify-center items-center`}
+          >
             <p className="w-max font-light xl:text-sm md:text-xs text-sm">
               Upcoming
             </p>

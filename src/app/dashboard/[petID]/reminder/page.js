@@ -59,7 +59,7 @@ export default function ReminderPage() {
 
   return (
     <div className="container flex w-full h-full">
-      <div className="m-4 flex flex-col w-full h-full mb-20 gap-2 bg-[#FFFFFD] rounded-[24px]">
+      <div className="sm:m-4 m-2 flex flex-col w-full h-full mb-20 gap-2 bg-[#FFFFFD] rounded-[24px]">
         <Title page={'reminder'} />
         <div className="w-full flex flex-row items-center justify-center">
           <Dialog open={open} onOpenChange={setOpen}>
@@ -86,9 +86,9 @@ export default function ReminderPage() {
             </DialogContent>
           </Dialog>
         </div>
-        <div className="w-full lg:px-20 grid h-full items-center justify-center overflow-y-auto mb-4">
+        <div className="w-full lg:px-20 grid items-center justify-center overflow-y-auto mb-4">
           {loading ? (
-            <div className="flex items-center justify-center">
+            <div className="flex h-full items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
           ) : (

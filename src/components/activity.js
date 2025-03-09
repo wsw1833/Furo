@@ -78,7 +78,7 @@ export default function Activity({ records, display }) {
       {limitedItems.map((record) => (
         <div
           key={record._id}
-          className={`w-full h-full flex xl:flex-row xl:justify-between lg:flex-col ${
+          className={`w-full h-full flex xl:flex-row justify-around lg:flex-col ${
             display ? 'flex-col' : 'flex-row'
           } lg:justify-center items-center justify-between mt-2 xl:py-1 py-4 xl:px-4 px-6 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
@@ -119,7 +119,7 @@ export default function Activity({ records, display }) {
                   </p>
                 </div>
               </div>
-              <div className="w-[24rem] h-full flex flex-row justify-between items-center">
+              <div className="w-full h-full flex flex-row justify-between items-center lg:gap-10">
                 <div className="flex flex-row gap-2 items-center justify-center">
                   <Image src={user} alt="profile" className="w-6 h-6" />
                   <p className="w-max font-medium text-sm">

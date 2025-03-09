@@ -64,7 +64,7 @@ export default function Dashboard() {
             </p>
           </div>
           {isLoading ? (
-            <div className="flex items-center justify-center">
+            <div className="flex h-full items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
           ) : (
@@ -82,7 +82,7 @@ export default function Dashboard() {
             <p className="font-semibold md:text-2xl text-xl">Profile</p>
           </div>
           {isLoading ? (
-            <div className="flex items-center justify-center">
+            <div className="flex h-full items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
           ) : (
@@ -131,7 +131,7 @@ export default function Dashboard() {
             <p className="font-semibold md:text-2xl text-xl">Reminder</p>
           </div>
           {isLoading ? (
-            <div className="flex items-center justify-center">
+            <div className="flex h-full items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
           ) : (
