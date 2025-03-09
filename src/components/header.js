@@ -12,7 +12,7 @@ export default function Header({ addr, QR }) {
       <div className="flex flex-row items-center justify-center gap-2">
         <Image src={icon} alt="icon" className="w-14 h-14" />
         <p className="font-semibold md:text-3xl text-2xl md:block hidden">
-          Petify
+          Furo
         </p>
       </div>
       <div className="w-max md:flex flex-row gap-4">

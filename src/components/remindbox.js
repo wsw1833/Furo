@@ -1,10 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { dateFormat } from '@/lib/utils';
+import checkup from '@images/checkup.png';
+import surgery from '@images/pet-surgery.png';
+import vaccine from '@images/syringe.png';
+import groom from '@images/pet-bath.png';
+import deworm from '@images/deworm.png';
+import defaultIcon from '@images/pet-health.png';
 
-export default function RemindBox({ items, display }) {
+const activityIcons = {
+  CheckUps: checkup,
+  Surgery: surgery,
+  Vaccination: vaccine,
+  Grooming: groom,
+  Deworming: deworm,
+};
+
+const getActivityIcon = (activityType) => {
+  return activityIcons[activityType] || defaultIcon;
+};
+
+export default function RemindBox({ reminders, display }) {
   // Handle case where items is not an array
-  if (!Array.isArray(items)) {
-    console.error('Expected items to be an array, but got:', items);
+  if (!Array.isArray(reminders)) {
+    console.error('Expected items to be an array, but got:', reminders);
     return (
       <div className="w-full h-full items-center justify-center">
         No Reminder Recently
@@ -15,9 +34,9 @@ export default function RemindBox({ items, display }) {
   let limitedItems = [];
 
   if (display) {
-    limitedItems = items;
+    limitedItems = reminders;
   } else {
-    limitedItems = items.slice(0, 3);
+    limitedItems = reminders.slice(0, 3);
   }
 
   return (
@@ -28,9 +47,9 @@ export default function RemindBox({ items, display }) {
           : 'flex-col'
       } w-full flex container h-full xl:mb-0 lg:mb-10`}
     >
-      {limitedItems.map((item, index) => (
+      {limitedItems.map((reminder) => (
         <div
-          key={index}
+          key={reminder._id}
           className={`${
             display ? 'flex flex-col py-4' : 'flex-row '
           } w-full flex xl:items-center xl:justify-between lg:justify-between lg:items-center justify-between items-center px-4 py-1 my-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
@@ -41,7 +60,7 @@ export default function RemindBox({ items, display }) {
             } w-2 h-2 rounded-full bg-[#FFC65C] items-end`}
           ></span>
           <Image
-            src={item.img}
+            src={getActivityIcon(reminder.petActivity)}
             alt="activities"
             className={`${display ? 'mb-4' : ''} lg:w-8 lg:h-8 w-10 h-10`}
           />
@@ -51,10 +70,10 @@ export default function RemindBox({ items, display }) {
             } flex flex-col h-max items-start`}
           >
             <p className="w-max font-medium xl:text-lg lg:text-base">
-              {item.act}
+              {reminder.petActivity}
             </p>
             <p className="w-max font-light xl:text-sm md:text-xs text-base">
-              {item.loc}
+              {reminder.petLocation}
             </p>
           </div>
           <span> </span>
@@ -65,7 +84,9 @@ export default function RemindBox({ items, display }) {
             <p className="w-max font-light xl:text-sm md:text-xs text-sm">
               Upcoming
             </p>
-            <p className="font-medium w-max text-base">{item.date}</p>
+            <p className="font-medium w-max text-base">
+              {dateFormat(reminder.appointmentDate)}
+            </p>
           </div>
         </div>
       ))}

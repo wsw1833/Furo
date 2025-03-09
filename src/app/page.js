@@ -46,7 +46,7 @@ export default function Home() {
             className="w-10 h-10 md:w-14 md:h-14 lg:w-18 lg:h-18"
           ></Image>
           <div className="text-3xl md:text-4xl lg:text-5xl font-semibold">
-            Petify
+            Furo
           </div>
         </div>
         <p className="line-clamp-2 sm:mt-10 mt-6 text-3xl md:text-4xl lg:text-6xl font-bold lg:leading-20 w-full">

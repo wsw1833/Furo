@@ -75,7 +75,9 @@ export default function ProfilePage() {
         </Button>
       </div>
       {isLoading && profile.petImage ? (
-        <div>Loading...</div>
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        </div>
       ) : (
         <div className="lg:w-[70%] w-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 place-items-center overflow-y-auto">
           {profile.map((pet) => (

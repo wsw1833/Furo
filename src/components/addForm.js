@@ -26,7 +26,6 @@ import {
 import { useAccount } from 'wagmi';
 import { useState } from 'react';
 import { addRecord } from '@/app/actions/pet/record';
-import { useRouter } from 'next/navigation';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
@@ -44,7 +43,6 @@ const formSchema = z.object({
 });
 
 export default function AddRecordForm({ petId, setOpen, onSuccess }) {
-  const router = useRouter();
   const { address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Initialize the form with useForm hook
@@ -72,8 +70,6 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
         form.reset();
         setOpen(false);
         if (onSuccess) onSuccess();
-      } else {
-        setError(result.error || 'Failed to add record');
       }
     } catch (err) {
       console.log(err);
@@ -107,7 +103,7 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Check-Ups">Pet Check-Ups</SelectItem>
+                    <SelectItem value="CheckUps">Pet Check-Ups</SelectItem>
                     <SelectItem value="Surgery">Pet Surgery</SelectItem>
                     <SelectItem value="Vaccination">Pet Vaccination</SelectItem>
                     <SelectItem value="Grooming">Pet Grooming</SelectItem>

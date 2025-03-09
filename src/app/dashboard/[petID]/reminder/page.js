@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import remind from '@images/reminder.png';
 import Title from '@/components/pageTitle';
@@ -13,9 +13,49 @@ import {
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { items } from '../page';
+import { fetchReminder } from '@/app/actions/pet/reminder';
 export default function ReminderPage() {
   const [open, setOpen] = useState(false);
+  const [petId, setPetId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [reminder, setReminder] = useState([]);
+
+  useEffect(() => {
+    const id = localStorage.getItem('selectedPetId');
+    setPetId(id);
+
+    //Fetch data once we have the petId
+    if (id) {
+      const getReminders = async () => {
+        setLoading(true);
+        try {
+          const data = await fetchReminder(id);
+          setReminder(data);
+        } catch (error) {
+          console.error('Failed to fetch records:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      getReminders();
+    }
+  }, []);
+
+  // Function to refresh data after adding a new record
+  const refreshReminders = async () => {
+    if (petId) {
+      setLoading(true);
+      try {
+        const data = await fetchReminder(petId);
+        setReminder(data);
+      } catch (error) {
+        console.error('Failed to refresh records:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <div className="container flex w-full h-full">
@@ -36,12 +76,24 @@ export default function ReminderPage() {
             <DialogContent className="bg-[#FFFFFD] w-full h-max flex flex-col ">
               <DialogTitle />
               <Title page={'reminder'} />
-              <ReminderForm />
+              {petId && (
+                <ReminderForm
+                  petId={petId}
+                  setOpen={setOpen}
+                  onSuccess={refreshReminders}
+                />
+              )}
             </DialogContent>
           </Dialog>
         </div>
         <div className="w-full lg:px-20 grid h-full items-center justify-center overflow-y-auto mb-4">
-          <RemindBox items={items} display={true} />
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : (
+            <RemindBox reminders={reminder.data || []} display={true} />
+          )}
         </div>
       </div>
     </div>

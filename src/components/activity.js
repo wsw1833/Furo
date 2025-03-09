@@ -14,8 +14,8 @@ import defaultIcon from '@images/pet-health.png';
 import Link from 'next/link';
 import { dateFormat } from '@/lib/utils';
 
-export const activityIcons = {
-  'Check-ups': checkup,
+const activityIcons = {
+  CheckUps: checkup,
   Surgery: surgery,
   Vaccination: vaccine,
   Grooming: groom,

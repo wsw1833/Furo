@@ -7,109 +7,18 @@ import Petpaw from '@images/pet-footprint.png';
 import cake from '@images/birthday.png';
 import clock from '@images/clock.png';
 import notify from '@images/notify-yellow.png';
-import petHealth from '@images/deworm.png';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { fetchPetProfile } from '@/app/actions/pet/profile';
+import { fetchReminder } from '@/app/actions/pet/reminder';
 import { fetchRecord } from '@/app/actions/pet/record';
 import { dateFormat } from '@/lib/utils';
-export const items = [
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://www.google.com',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-  {
-    img: petHealth,
-    act: 'pet health',
-    loc: 'sea park animal polyclinic',
-    date: '2 mar 2025',
-    weight: 5,
-    condition: 'Good',
-    user: '0x00...0000',
-    url: 'https://',
-  },
-];
 
 export default function Dashboard() {
   const [petId, setPetId] = useState(null);
   const [profile, setProfile] = useState([]);
   const [recordData, setRecordData] = useState([]);
+  const [reminderData, setReminderData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const loadPetData = async (id) => {
@@ -117,13 +26,15 @@ export default function Dashboard() {
     setIsLoading(true);
 
     try {
-      const [profileData, recordsData] = await Promise.all([
+      const [profileData, recordsData, reminderData] = await Promise.all([
         fetchPetProfile(id),
         fetchRecord(id),
+        fetchReminder(id),
       ]);
 
       setProfile(profileData.profile);
       setRecordData(recordsData);
+      setReminderData(reminderData);
     } catch (err) {
       console.error('Failed to fetch pet data:', err);
     } finally {
@@ -210,7 +121,7 @@ export default function Dashboard() {
         <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] rounded-[24px] p-4 h-full md:mb-8 mb-4 ">
           <QRBox />
         </div>
-        <div className="lg:col-span-4 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px] p-4 h-max">
+        <div className="lg:col-span-4 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px] p-4">
           <div className="flex flex-row items-center justify-start gap-2 mb-2">
             <Image
               src={notify}
@@ -219,7 +130,13 @@ export default function Dashboard() {
             />
             <p className="font-semibold md:text-2xl text-xl">Reminder</p>
           </div>
-          <RemindBox items={items} display={false} />
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : (
+            <RemindBox reminders={reminderData.data || []} display={false} />
+          )}
         </div>
         <div className="lg:col-span-2 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px]">
           <CarouselBox />

@@ -5,14 +5,14 @@ import { revalidatePath } from 'next/cache';
 export async function fetchReminder(petID) {
   try {
     const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/record?petId=${petID}`);
+    const response = await fetch(`${baseUrl}/api/reminder?petId=${petID}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
         errorData.error || `Server responded with ${response.status}`
       );
     }
-    revalidatePath(`/dashboard/${petID}/record`);
+    revalidatePath(`/dashboard/${petID}/reminder`);
     return await response.json();
   } catch (err) {
     return { success: false, status: 400, error: err.message };
@@ -22,7 +22,7 @@ export async function fetchReminder(petID) {
 export async function addReminder(formData) {
   try {
     const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/record`, {
+    const response = await fetch(`${baseUrl}/api/reminder`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export async function addReminder(formData) {
       );
     }
 
-    revalidatePath(`/dashboard/${formData.petId}/record`);
+    revalidatePath(`/dashboard/${formData.petId}/reminder`);
     return await response.json();
   } catch (err) {
     return { success: false, status: 400, error: err.message };

@@ -28,35 +28,51 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { Calendar } from './ui/calendar';
+import { useState } from 'react';
+import { addReminder } from '@/app/actions/pet/reminder';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
-  activity: z.string({
+  petActivity: z.string({
     required_error: 'Please select an activity for your pet.',
   }),
-  location: z.string({ required_error: 'Location place is required.' }),
+  petLocation: z.string({ required_error: 'Location place is required.' }),
   appointmentDate: z.date({ required_error: 'Appointment date is required.' }),
 });
 
-export default function ReminderForm() {
+export default function ReminderForm({ petId, setOpen, onSuccess }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      activity: undefined,
-      location: undefined,
+      petActivity: '',
+      petLocation: '',
       appointmentDate: undefined,
     },
   });
 
   // Define the submit handler
-  function onSubmit(values) {
-    // This would typically send the form data to an API
-    console.log(values);
-
-    // Reset the form
-    form.reset();
-  }
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const formData = {
+        petId: petId,
+        ...data,
+      };
+      const response = await addReminder(formData);
+      if (response.success) {
+        form.reset();
+        setOpen(false);
+        if (onSuccess) onSuccess();
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="mt-4 h-full w-full flex flex-row justify-center ">
@@ -67,7 +83,7 @@ export default function ReminderForm() {
         >
           <FormField
             control={form.control}
-            name="activity"
+            name="petActivity"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
                 <FormLabel>Pet Care Activities</FormLabel>
@@ -83,9 +99,11 @@ export default function ReminderForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Dog">Dog</SelectItem>
-                    <SelectItem value="Cat">Cat</SelectItem>
-                    <SelectItem value="Hamster">Hamster</SelectItem>
+                    <SelectItem value="CheckUps">Pet Check-Ups</SelectItem>
+                    <SelectItem value="Surgery">Pet Surgery</SelectItem>
+                    <SelectItem value="Vaccination">Pet Vaccination</SelectItem>
+                    <SelectItem value="Grooming">Pet Grooming</SelectItem>
+                    <SelectItem value="Deworming">Pet Deworming</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -95,7 +113,7 @@ export default function ReminderForm() {
 
           <FormField
             control={form.control}
-            name="location"
+            name="petLocation"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
                 <FormLabel>Pet Health & Grooming Location</FormLabel>
@@ -143,9 +161,7 @@ export default function ReminderForm() {
                       mode="single"
                       selected={field.value ? new Date(field.value) : undefined}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date('1900-01-01')
-                      }
+                      disabled={(date) => date < new Date('1900-01-01')}
                       initialFocus
                     />
                   </PopoverContent>
@@ -161,9 +177,10 @@ export default function ReminderForm() {
           <div className="w-full flex items-center justify-center mb-4">
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
             >
-              Set Reminder
+              {isSubmitting ? 'Submitting...' : 'Set Reminder'}
               <Image src={remind} alt="reminderIcon" className="w-6 h-6" />
             </Button>
           </div>
