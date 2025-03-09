@@ -23,41 +23,64 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
+import { useAccount } from 'wagmi';
+import { useState } from 'react';
+import { addRecord } from '@/app/actions/pet/record';
+import { useRouter } from 'next/navigation';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
-  activity: z.string({
+  petActivity: z.string({
     required_error: 'Please select an activity for your pet.',
   }),
-  location: z.string(),
+  petLocation: z.string(),
   walletAddress: z.string(),
-  petWeight: z.coerce.number({
-    required_error: `Please enter your pet's weight`,
+  petWeight: z.coerce
+    .number()
+    .positive({ message: 'Weight must be a positive number' }),
+  petCondition: z.string({
+    required_error: `Your pet's condition is required.`,
   }),
-  condition: z.string({ required_error: `Your pet's condition is required.` }),
 });
 
-export default function AddRecordForm() {
+export default function AddRecordForm({ petId, setOpen, onSuccess }) {
+  const router = useRouter();
+  const { address } = useAccount();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      activity: undefined,
-      location: '',
-      walletAddress: '',
-      petWeight: z.number,
-      condition: undefined,
+      petActivity: '',
+      petLocation: '',
+      walletAddress: address,
+      petWeight: 0,
+      petCondition: '',
     },
   });
 
   // Define the submit handler
-  function onSubmit(values) {
-    // This would typically send the form data to an API
-    console.log(values);
-
-    // Reset the form
-    form.reset();
-  }
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const formData = {
+        petId: petId,
+        ...data,
+      };
+      const response = await addRecord(formData);
+      if (response.success) {
+        form.reset();
+        setOpen(false);
+        if (onSuccess) onSuccess();
+      } else {
+        setError(result.error || 'Failed to add record');
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="mt-4 h-full w-full flex flex-row justify-center ">
@@ -68,7 +91,7 @@ export default function AddRecordForm() {
         >
           <FormField
             control={form.control}
-            name="activity"
+            name="petActivity"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
                 <FormLabel>Pet Care Activities</FormLabel>
@@ -84,9 +107,11 @@ export default function AddRecordForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Dog">Dog</SelectItem>
-                    <SelectItem value="Cat">Cat</SelectItem>
-                    <SelectItem value="Hamster">Hamster</SelectItem>
+                    <SelectItem value="Check-Ups">Pet Check-Ups</SelectItem>
+                    <SelectItem value="Surgery">Pet Surgery</SelectItem>
+                    <SelectItem value="Vaccination">Pet Vaccination</SelectItem>
+                    <SelectItem value="Grooming">Pet Grooming</SelectItem>
+                    <SelectItem value="Deworming">Pet Deworming</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -96,14 +121,13 @@ export default function AddRecordForm() {
 
           <FormField
             control={form.control}
-            name="location"
+            name="petLocation"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
                 <FormLabel>Pet Health & Grooming Location</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Enter The Location"
-                    disabled
                     {...field}
                     className={
                       'w-[20rem] bg-zinc-100 sm:text-base text-sm text-center text-[#000000]'
@@ -124,7 +148,7 @@ export default function AddRecordForm() {
                 <FormControl>
                   <Input
                     disabled
-                    placeholder={''}
+                    placeholder={address}
                     {...field}
                     className={
                       'w-[30rem] bg-zinc-100 sm:text-base text-xs text-center'
@@ -145,6 +169,7 @@ export default function AddRecordForm() {
                 <FormControl>
                   <Input
                     type="number"
+                    {...form.register('petWeight', { valueAsNumber: true })}
                     placeholder="KG"
                     {...field}
                     className={'w-[10rem] sm:text-base text-sm text-center'}
@@ -157,7 +182,7 @@ export default function AddRecordForm() {
 
           <FormField
             control={form.control}
-            name="condition"
+            name="petCondition"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
                 <FormLabel>Pet&apos; Condition</FormLabel>
@@ -187,9 +212,10 @@ export default function AddRecordForm() {
           <div className="w-full flex items-center justify-center mb-4">
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
             >
-              Create
+              {isSubmitting ? 'Adding Record...' : 'Add Record'}
               <Image src={card} alt="card" className="w-fit h-fit" />
             </Button>
           </div>

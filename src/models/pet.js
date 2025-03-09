@@ -1,7 +1,7 @@
 // models/User.js
 import mongoose from 'mongoose';
 
-const UserSchema = new mongoose.Schema({
+const petSchema = new mongoose.Schema({
   petName: {
     type: String,
     required: [true, 'Please provide a name'],
@@ -14,7 +14,6 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Please provide an email'],
-    unique: true,
   },
   petType: {
     type: String,
@@ -42,4 +41,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
+export default mongoose.models.Pet || mongoose.model('Pet', petSchema);

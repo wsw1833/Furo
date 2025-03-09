@@ -1,11 +1,12 @@
+// RecordPage.jsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import add from '@images/add-button.png';
 import Title from '@/components/pageTitle';
 import { Button } from '@/components/ui/button';
 import ActivityPage from '@/components/activity';
-import { items } from '../page';
 import AddRecordForm from '@/components/addForm';
 import {
   Dialog,
@@ -13,9 +14,50 @@ import {
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
-import Image from 'next/image';
+import { fetchRecord } from '@/app/actions/pet/record';
+
 export default function RecordPage() {
   const [open, setOpen] = useState(false);
+  const [petId, setPetId] = useState(null);
+  const [recordData, setRecordData] = useState({ record: [] });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const id = localStorage.getItem('selectedPetId');
+    setPetId(id);
+
+    // Fetch data once we have the petId
+    if (id) {
+      const getRecords = async () => {
+        setLoading(true);
+        try {
+          const data = await fetchRecord(id);
+          setRecordData(data);
+        } catch (error) {
+          console.error('Failed to fetch records:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      getRecords();
+    }
+  }, []);
+
+  // Function to refresh data after adding a new record
+  const refreshRecords = async () => {
+    if (petId) {
+      setLoading(true);
+      try {
+        const data = await fetchRecord(petId);
+        setRecordData(data);
+      } catch (error) {
+        console.error('Failed to refresh records:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <div className="container flex w-full h-full">
@@ -36,12 +78,24 @@ export default function RecordPage() {
             <DialogContent className="bg-[#FFFFFD] w-full h-max flex flex-col ">
               <DialogTitle />
               <Title page={'addRecord'} />
-              <AddRecordForm />
+              {petId && (
+                <AddRecordForm
+                  petId={petId}
+                  setOpen={setOpen}
+                  onSuccess={refreshRecords}
+                />
+              )}
             </DialogContent>
           </Dialog>
         </div>
         <div className="w-full h-full lg:px-20 px-8 flex items-center justify-center overflow-auto mb-4">
-          <ActivityPage items={items} display={true} />
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : (
+            <ActivityPage records={recordData.record || []} display={true} />
+          )}
         </div>
       </div>
     </div>

@@ -5,9 +5,27 @@ import kg from '@images/weight.png';
 import condition from '@images/animal-welfare.png';
 import user from '@images/profile.png';
 import scroll from '@images/scroll.png';
+import checkup from '@images/checkup.png';
+import surgery from '@images/pet-surgery.png';
+import vaccine from '@images/syringe.png';
+import groom from '@images/pet-bath.png';
+import deworm from '@images/deworm.png';
+import defaultIcon from '@images/pet-health.png';
 import Link from 'next/link';
+import { dateFormat } from '@/lib/utils';
 
-export default function Activity({ items, display }) {
+export const activityIcons = {
+  'Check-ups': checkup,
+  Surgery: surgery,
+  Vaccination: vaccine,
+  Grooming: groom,
+  Deworming: deworm,
+};
+
+const getActivityIcon = (activityType) => {
+  return activityIcons[activityType] || defaultIcon;
+};
+export default function Activity({ records, display }) {
   const [isMobile, setIsMobile] = useState(false);
 
   // Function to determine and update screen size
@@ -29,14 +47,13 @@ export default function Activity({ items, display }) {
 
       window.addEventListener('resize', checkScreenSize);
 
-      // Clean up
       return () => window.removeEventListener('resize', checkScreenSize);
     }
   }, []);
 
   // Handle case where items is not an array
-  if (!Array.isArray(items)) {
-    console.error('Expected items to be an array, but got:', items);
+  if (!Array.isArray(records)) {
+    console.error('Expected items to be an array, but got:', records);
     return (
       <div className="w-full h-full items-center justify-center">
         No Activities Recently
@@ -47,9 +64,9 @@ export default function Activity({ items, display }) {
   let limitedItems = [];
 
   if (display) {
-    limitedItems = items;
+    limitedItems = records;
   } else {
-    limitedItems = items.slice(0, isMobile);
+    limitedItems = records.slice(0, isMobile);
   }
 
   return (
@@ -58,15 +75,15 @@ export default function Activity({ items, display }) {
         display ? 'h-full' : 'h-max'
       } container flex flex-col w-full`}
     >
-      {limitedItems.map((item, index) => (
+      {limitedItems.map((record) => (
         <div
-          key={index}
+          key={record._id}
           className={`w-full h-full flex xl:flex-row xl:justify-between lg:flex-col ${
             display ? 'flex-col' : 'flex-row'
           } lg:justify-center items-center justify-between mt-2 xl:py-1 py-4 xl:px-4 px-6 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <Image
-            src={item.img}
+            src={getActivityIcon(record.petActivity)}
             alt="activities"
             className="lg:w-8 lg:h-8 w-10 h-10"
           />
@@ -77,14 +94,14 @@ export default function Activity({ items, display }) {
           `}
           >
             <p className="w-max font-medium xl:text-lg lg:text-base">
-              {item.act}
+              {record.petActivity}
             </p>
             <p className="w-max font-light xl:text-sm md:text-xs text-base">
-              {item.loc}
+              {record.petLocation}
             </p>
           </div>
           <p className="font-medium w-[10rem] text-base flex justify-center">
-            {item.date}
+            {dateFormat(record.createdAt)}
           </p>
           {display && (
             <div className=" flex flex-col h-[6rem]">
@@ -92,24 +109,26 @@ export default function Activity({ items, display }) {
                 <div className="flex flex-row gap-2 items-center justify-center">
                   <Image src={kg} alt="weight" className="w-6 h-6" />
                   <p className="w-max font-medium text-base">
-                    Weight: {item.weight}kg
+                    Weight: {record.petWeight}kg
                   </p>
                 </div>
                 <div className="flex flex-row gap-2 items-center justify-center">
                   <Image src={condition} alt="condition" className="w-6 h-6" />
                   <p className="w-max font-medium text-base">
-                    Condition: {item.condition}
+                    Condition: {record.petCondition}
                   </p>
                 </div>
               </div>
               <div className="w-[24rem] h-full flex flex-row justify-between items-center">
                 <div className="flex flex-row gap-2 items-center justify-center">
                   <Image src={user} alt="profile" className="w-6 h-6" />
-                  <p className="w-max font-medium text-sm">User: {item.user}</p>
+                  <p className="w-max font-medium text-sm">
+                    User: {record.walletAddress}
+                  </p>
                 </div>
                 <div className="flex flex-row gap-2 items-center justify-center">
                   <Link
-                    href={item.url}
+                    href={'http'}
                     target="_blank"
                     className="w-max font-light text-sm underline text-[#2B87FF]"
                   >

@@ -2,7 +2,7 @@
 import { cors, runMiddleware } from '@/lib/cors';
 import dbConnect from '@/lib/mongodb';
 import { NextResponse } from 'next/server';
-import User from '@/models/user';
+import Pet from '@/models/pet';
 export async function GET(req, res) {
   const { searchParams } = req.nextUrl;
   const walletAddress = searchParams.get('walletAddress');
@@ -15,7 +15,7 @@ export async function GET(req, res) {
   }
   await dbConnect();
   try {
-    const profiles = await User.find({ walletAddress: walletAddress });
+    const profiles = await Pet.find({ walletAddress: walletAddress });
     return NextResponse.json(
       { success: true, profile: profiles },
       { status: 200 }
@@ -25,6 +25,4 @@ export async function GET(req, res) {
   }
 }
 
-export async function POST(request) {
-  // Handle POST
-}
+export async function POST(req, res) {}

@@ -71,7 +71,7 @@ export default function ProfileForm({ addr }) {
     },
   });
 
-  const submitImagS3 = async (petImage) => {
+  const submitImageS3 = async (petImage) => {
     try {
       const formData = new FormData();
       formData.append('petImage', petImage);
@@ -94,10 +94,9 @@ export default function ProfileForm({ addr }) {
   };
 
   const onSubmit = async (data) => {
-    console.log(data.petImage);
     setIsSubmitting(true);
     try {
-      const imageURL = await submitImagS3(data.petImage);
+      const imageURL = await submitImageS3(data.petImage);
       const formData = {
         ...data,
         birthDay: data.birthDay.toISOString(),

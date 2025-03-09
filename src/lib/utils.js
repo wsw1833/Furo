@@ -11,3 +11,12 @@ export const formatAddress = (addr) => {
   }
   return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 };
+
+export const dateFormat = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+};

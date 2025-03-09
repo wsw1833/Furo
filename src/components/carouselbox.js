@@ -30,7 +30,7 @@ export default function CarouselBox() {
           {Array.from({ length: 4 }).map((_, index) => (
             <CarouselItem key={index}>
               <div className="lg:w-full lg:h-full md:w-30 md:h-30 w-max h-max flex items-center aspect-auto justify-center">
-                <Image src={items[index]} alt="images" className="" />
+                <Image src={items[index]} alt="images" priority className="" />
               </div>
             </CarouselItem>
           ))}

@@ -7,19 +7,18 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
+import { fetchAllPetProfile } from '../actions/pet/profile';
+
 export default function ProfilePage() {
   const { address } = useAccount();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   let [profile, setProfile] = useState([]);
-  const fetchProfile = async () => {
+
+  const loadProfile = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/user?walletAddress=${address}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch profiles');
-      }
-      const data = await response.json();
+      const data = await fetchAllPetProfile(address);
       setProfile(data.profile);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -29,8 +28,8 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    loadProfile();
+  }, [address]);
 
   const dashboardHandler = (petId) => {
     localStorage.setItem('selectedPetId', petId);

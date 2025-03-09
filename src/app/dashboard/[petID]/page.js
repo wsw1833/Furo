@@ -5,13 +5,14 @@ import RemindBox from '@/components/remindbox';
 import CarouselBox from '@/components/carouselbox';
 import Petpaw from '@images/pet-footprint.png';
 import cake from '@images/birthday.png';
-import dog from '@images/dog.png';
 import clock from '@images/clock.png';
 import notify from '@images/notify-yellow.png';
 import petHealth from '@images/deworm.png';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
+import { fetchPetProfile } from '@/app/actions/pet/profile';
+import { fetchRecord } from '@/app/actions/pet/record';
+import { dateFormat } from '@/lib/utils';
 export const items = [
   {
     img: petHealth,
@@ -108,28 +109,39 @@ export const items = [
 export default function Dashboard() {
   const [petId, setPetId] = useState(null);
   const [profile, setProfile] = useState([]);
+  const [recordData, setRecordData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const loadPetData = async (id) => {
+    if (!id) return;
+    setIsLoading(true);
+
+    try {
+      const [profileData, recordsData] = await Promise.all([
+        fetchPetProfile(id),
+        fetchRecord(id),
+      ]);
+
+      setProfile(profileData.profile);
+      setRecordData(recordsData);
+    } catch (err) {
+      console.error('Failed to fetch pet data:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const id = localStorage.getItem('selectedPetId');
-    setPetId(id);
-    const fetchPetProfile = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/petprofile?petId=${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch pet profile');
-        }
-        const data = await response.json();
-        setProfile(data.profile);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPetProfile();
-  }, [setPetId]);
+
+    if (id) {
+      setPetId(id);
+      loadPetData(id);
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
   return (
     <div className="container w-full lg:h-full h-max">
       <div className="m-4 grid lg:grid-cols-9 lg:grid-rows-2 grid-cols-2 flex-row h-full gap-2">
@@ -140,19 +152,29 @@ export default function Dashboard() {
               Most Recent Activity
             </p>
           </div>
-          <ActivityPage items={items} display={false} />
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : (
+            <ActivityPage records={recordData.record || []} display={false} />
+          )}
         </div>
         {/* pet profile */}
-        {!isLoading && (
-          <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 flex flex-col w-full h-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
-            <div className="flex flex-row w-full items-center justify-start gap-2 p-4">
-              <Image
-                src={Petpaw}
-                alt="petPaw"
-                className="md:w-8 md:h-8 w-6 h-6"
-              />
-              <p className="font-semibold md:text-2xl text-xl">Profile</p>
+        <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 flex flex-col w-full h-full h-full items-center bg-[#FFFBEF] rounded-[24px]">
+          <div className="flex flex-row w-full items-center justify-start gap-2 p-4">
+            <Image
+              src={Petpaw}
+              alt="petPaw"
+              className="md:w-8 md:h-8 w-6 h-6"
+            />
+            <p className="font-semibold md:text-2xl text-xl">Profile</p>
+          </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
+          ) : (
             <div className="flex relative flex-col items-center justify-center w-full">
               <Image
                 src={profile.petImage}
@@ -176,13 +198,15 @@ export default function Dashboard() {
                   </p>
                   <div className="flex flex-row items-center justify-start mt-2 gap-2">
                     <Image src={cake} alt="birthday" className="w-6 h-6" />
-                    <p className="md:text-lg text-base">{profile.birthDay}</p>
+                    <p className="md:text-lg text-base">
+                      {dateFormat(profile.birthDay)}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] rounded-[24px] p-4 h-full md:mb-8 mb-4 ">
           <QRBox />
         </div>
