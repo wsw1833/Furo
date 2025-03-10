@@ -42,7 +42,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddRecordForm({ petId, setOpen, onSuccess }) {
+export default function AddRecordForm({ petId, setOpen, onSuccess, location }) {
   const { address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Initialize the form with useForm hook
@@ -124,10 +124,11 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
                 <FormControl>
                   <Input
                     placeholder="Enter The Location"
+                    disabled={location}
                     {...field}
-                    className={
-                      'w-[20rem] bg-zinc-100 sm:text-base text-sm text-center text-[#000000]'
-                    }
+                    className={`${
+                      location ? 'bg-zinc-100' : ''
+                    } w-[20rem] sm:text-base text-sm text-center text-[#000000]`}
                   />
                 </FormControl>
                 <FormMessage />
@@ -147,7 +148,7 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
                     placeholder={address}
                     {...field}
                     className={
-                      'w-[30rem] bg-zinc-100 sm:text-base text-xs text-center'
+                      'md:w-[30rem] w-[10rem] bg-zinc-100 sm:text-base text-xs text-center'
                     }
                   />
                 </FormControl>
@@ -161,7 +162,7 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
             name="petWeight"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Pet&apos; Weight</FormLabel>
+                <FormLabel>Pet&apos;s Weight</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -181,7 +182,7 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
             name="petCondition"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center">
-                <FormLabel>Pet&apos; Condition</FormLabel>
+                <FormLabel>Pet&apos;s Condition</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -212,7 +213,12 @@ export default function AddRecordForm({ petId, setOpen, onSuccess }) {
               className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
             >
               {isSubmitting ? 'Adding Record...' : 'Add Record'}
-              <Image src={card} alt="card" className="w-fit h-fit" />
+              <Image
+                src={card}
+                priority={true}
+                alt="card"
+                className="w-fit h-fit"
+              />
             </Button>
           </div>
         </form>

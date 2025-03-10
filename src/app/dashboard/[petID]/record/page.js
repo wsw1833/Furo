@@ -71,11 +71,16 @@ export default function RecordPage() {
                   'w-fit bg-[#FFC65C] shadow-[0_3px_10px_rgb(0,0,0,0.2)] m-4 text-[#181818] p-4 font-semibold rounded-[12px] text-lg items-center justify-center hover:bg-[#F89D47] transition hover:duration-300'
                 }
               >
-                <Image src={add} alt="addIcon" className="w-10 h-10" />
+                <Image
+                  src={add}
+                  priority={true}
+                  alt="addIcon"
+                  className="w-10 h-10"
+                />
                 Add Record
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#FFFFFD] w-full h-max flex flex-col ">
+            <DialogContent className="bg-[#FFFFFD] w-full h-max flex flex-col">
               <DialogTitle />
               <Title page={'addRecord'} />
               {petId && (
@@ -83,12 +88,13 @@ export default function RecordPage() {
                   petId={petId}
                   setOpen={setOpen}
                   onSuccess={refreshRecords}
+                  location={false}
                 />
               )}
             </DialogContent>
           </Dialog>
         </div>
-        <div className="w-full h-full lg:px-20 px-8 flex items-center justify-center overflow-auto mb-4">
+        <div className="w-full h-full lg:px-20 px-4 flex items-center justify-center overflow-auto mb-4">
           {loading ? (
             <div className="flex h-full items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>

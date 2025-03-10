@@ -38,13 +38,14 @@ export default function Home() {
       <Image
         className="sm:w-[50%] shrink-0 max-h-200 sm:min-h-180 h-fit brightness-70"
         src={animals}
+        priority={true}
         alt="animal picture"
         lazy="true"
       ></Image>
       <div className="flex flex-col sm:w-[50%] sm:mt-18 sm:px-12 mt-10 px-6 w-full">
         <div className="flex flex-row items-center sm:justify-start gap-2">
           <Image
-            lazy="true"
+            priority={true}
             src={icon}
             alt="icon"
             className="w-10 h-10 md:w-14 md:h-14 lg:w-18 lg:h-18"

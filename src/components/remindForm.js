@@ -181,7 +181,12 @@ export default function ReminderForm({ petId, setOpen, onSuccess }) {
               className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
             >
               {isSubmitting ? 'Submitting...' : 'Set Reminder'}
-              <Image src={remind} alt="reminderIcon" className="w-6 h-6" />
+              <Image
+                src={remind}
+                priority={true}
+                alt="reminderIcon"
+                className="w-6 h-6"
+              />
             </Button>
           </div>
         </form>

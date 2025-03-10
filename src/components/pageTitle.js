@@ -10,6 +10,7 @@ export default function PageTitle({ page }) {
       <div className="flex flex-row w-full h-max items-center justify-center mt-6 gap-2">
         <Image
           src={petHealth}
+          priority={true}
           alt="clock"
           className="md:w-12 md:h-12 w-10 h-10"
         />
@@ -25,6 +26,7 @@ export default function PageTitle({ page }) {
       <div className="flex flex-row w-full h-max items-center justify-center mt-6 gap-2">
         <Image
           src={notify}
+          priority={true}
           alt="notification"
           className="md:w-12 md:h-12 w-10 h-10"
         />
@@ -37,6 +39,7 @@ export default function PageTitle({ page }) {
       <div className="flex flex-row w-full h-max items-center justify-center mt-6">
         <Image
           src={addButton}
+          priority={true}
           alt="addButton"
           className="md:w-14 md:h-14 w-12 h-12"
         />
@@ -49,6 +52,7 @@ export default function PageTitle({ page }) {
       <div className="flex flex-row w-full h-max items-center justify-center mt-6">
         <Image
           src={addButton}
+          priority={true}
           alt="addButton"
           className="md:w-14 md:h-14 w-12 h-12"
         />

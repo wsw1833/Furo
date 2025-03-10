@@ -10,7 +10,7 @@ export default function Header({ addr, QR }) {
   return (
     <div className="w-full flex items-center justify-between p-6">
       <div className="flex flex-row items-center justify-center gap-2">
-        <Image src={icon} alt="icon" className="w-14 h-14" />
+        <Image src={icon} priority={true} alt="icon" className="w-14 h-14" />
         <p className="font-semibold md:text-3xl text-2xl md:block hidden">
           Furo
         </p>
@@ -21,7 +21,12 @@ export default function Header({ addr, QR }) {
             QR ? 'hidden' : 'lg:flex hidden'
           } w-14 h-14 bg-[#E9E6DD] shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-[#181818] font-medium rounded-[20px] text-lg items-center justify-center hover:bg-[#FFC65C] transition hover:duration-300 `}
         >
-          <Image src={explorer} alt="explorer" className="w-fit h-fit" />
+          <Image
+            src={explorer}
+            priority={true}
+            alt="explorer"
+            className="w-fit h-fit"
+          />
         </Button>
         <Button
           className={`
@@ -29,7 +34,12 @@ export default function Header({ addr, QR }) {
               QR ? 'flex' : 'lg:flex hidden'
             }`}
         >
-          <Image src={metamask} alt="metamask" className="w-fit h-fit" />
+          <Image
+            src={metamask}
+            priority={true}
+            alt="metamask"
+            className="w-fit h-fit"
+          />
           {addr}
         </Button>
         <Button
@@ -38,7 +48,12 @@ export default function Header({ addr, QR }) {
               QR ? 'hidden' : 'lg:hidden sm:flex'
             }`}
         >
-          <Image src={hamburger} alt="metamask" className="w-8 h-8" />
+          <Image
+            src={hamburger}
+            priority={true}
+            alt="metamask"
+            className="w-8 h-8"
+          />
         </Button>
       </div>
     </div>

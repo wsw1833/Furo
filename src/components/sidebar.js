@@ -63,7 +63,7 @@ export default function Sidebar() {
   return (
     <div className="w-max h-screen flex flex-col items-start justify-start ml-6 lg:flex hidden">
       <div className="line-clamp-2 font-semibold md:text-3xl w-[18rem] items-end">
-        Your Pet&apos; Health, Always in Care
+        Your Pet&apos;s Health, Always in Care
         <Image src={love} alt="love" className="w-8 h-8 ml-3 inline-block" />
       </div>
       <div className="flex flex-row mt-8 font-medium md:text-xl items-center justify-between w-[90%]">
@@ -88,7 +88,12 @@ export default function Sidebar() {
               font-medium sm:text-xl text-lg
             `}
           >
-            <Image src={item.icon} alt={item.alt} className="w-6 h-6" />
+            <Image
+              src={item.icon}
+              priority={true}
+              alt={item.alt}
+              className="w-6 h-6"
+            />
             {item.name}
           </Button>
         </Link>
@@ -99,7 +104,12 @@ export default function Sidebar() {
           'w-[90%] p-4 mt-2 flex flex-row items-center justify-start rounded-[20px] shadow-none hover:bg-[#FFC65C] bg-[#FFFFFD] text-[#181818] active:bg-[#F89D47] transition hover:duration-300 font-medium sm:text-xl text-lg'
         }
       >
-        <Image src={switchPet} alt="switchpet" className="w-6 h-6" />
+        <Image
+          src={switchPet}
+          priority={true}
+          alt="switchpet"
+          className="w-6 h-6"
+        />
         Switch Pet
       </Button>
       <Button
@@ -107,7 +117,7 @@ export default function Sidebar() {
           'w-[90%] p-4 mt-2 flex flex-row items-center justify-start rounded-[20px] shadow-none hover:bg-[#FFC65C] bg-[#FFFFFD] text-[#181818] active:bg-[#F89D47] transition hover:duration-300 font-medium sm:text-xl text-lg'
         }
       >
-        <Image src={logout} alt="logout" className="w-6 h-6" />
+        <Image src={logout} priority={true} alt="logout" className="w-6 h-6" />
         Sign Out
       </Button>
     </div>

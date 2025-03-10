@@ -59,7 +59,7 @@ export default function ReminderPage() {
 
   return (
     <div className="container flex w-full h-full">
-      <div className="sm:m-4 m-2 flex flex-col w-full h-full mb-20 gap-2 bg-[#FFFFFD] rounded-[24px]">
+      <div className=" m-4 flex flex-col w-full h-full mb-20 gap-2 bg-[#FFFFFD] rounded-[24px]">
         <Title page={'reminder'} />
         <div className="w-full flex flex-row items-center justify-center">
           <Dialog open={open} onOpenChange={setOpen}>
@@ -69,7 +69,12 @@ export default function ReminderPage() {
                   'w-fit bg-[#FFC65C] shadow-[0_3px_10px_rgb(0,0,0,0.2)] m-4 text-[#181818] p-4 font-semibold rounded-[12px] text-lg items-center justify-center hover:bg-[#F89D47] transition hover:duration-300'
                 }
               >
-                <Image src={remind} alt="reminderIcon" className="w-6 h-6" />
+                <Image
+                  src={remind}
+                  priority={true}
+                  alt="reminderIcon"
+                  className="w-6 h-6"
+                />
                 Set Reminder
               </Button>
             </DialogTrigger>

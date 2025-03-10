@@ -54,7 +54,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="container w-full lg:h-full h-max">
+    <div className="container lg:w-full lg:h-full h-max">
       <div className="m-4 grid lg:grid-cols-9 lg:grid-rows-2 grid-cols-2 flex-row h-full gap-2">
         <div className="lg:col-span-3 lg:row-span-2 col-span-2 row-span-1 bg-[#FFFFFD] lg:mb-8 w-full rounded-[24px] p-4">
           <div className="flex flex-row items-center justify-start gap-2 mb-2">
@@ -94,24 +94,24 @@ export default function Dashboard() {
                 width={500}
                 height={500}
                 alt="petImage"
-                className="xl:w-60 xl:h-60 lg:w-50 lg:h-50 w-56 h-56 mb-12 lg:absolute rounded-[20px]"
+                className="xl:w-60 xl:h-60 lg:w-50 lg:h-50 sm:w-50 sm:h-50 w-46 h-46 sm:mb-12 lg:absolute rounded-[20px]"
               />
               <div className="z-1 w-full xl:mt-30 lg:mt-27 h-full relative bg-white/10 backdrop-blur-sm rounded-[30px]">
                 <div className="flex flex-col justify-between p-4 row w-full h-full">
                   <div className="flex flex-row justify-between">
-                    <p className="font-semibold md:text-xl text-lg ">
+                    <p className="font-semibold sm:text-xl text-lg ">
                       {profile.petName}
                     </p>
-                    <p className="w-fit px-6 border-2 rounded-[20px] border-[#FFC65C] md:text-base text-sm">
+                    <p className="w-fit px-6 border-2 flex items-center justify-center rounded-[20px] border-[#FFC65C] text-base">
                       {profile.petType}
                     </p>
                   </div>
-                  <p className="font-light mt-1 md:text-base text-sm">
+                  <p className="font-light mt-1 text-base">
                     {profile.petBreed}
                   </p>
                   <div className="flex flex-row items-center justify-start mt-2 gap-2">
-                    <Image src={cake} alt="birthday" className="w-6 h-6" />
-                    <p className="md:text-lg text-base">
+                    <Image src={cake} alt="birthday" className="w-7 h-7" />
+                    <p className="sm:text-lg text-lg">
                       {dateFormat(profile.birthDay)}
                     </p>
                   </div>
@@ -123,7 +123,7 @@ export default function Dashboard() {
         <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] rounded-[24px] p-4 h-full md:mb-8 mb-4 ">
           <QRBox petId={petId} />
         </div>
-        <div className="lg:col-span-4 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px] p-4">
+        <div className="lg:col-span-4 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] lg:mb-8 rounded-[24px] p-4">
           <div className="flex flex-row items-center justify-start gap-2 mb-2">
             <Image
               src={notify}
@@ -140,7 +140,7 @@ export default function Dashboard() {
             <RemindBox reminders={reminderData.data || []} display={false} />
           )}
         </div>
-        <div className="lg:col-span-2 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px]">
+        <div className="lg:col-span-2 lg:row-span-1 col-span-2 row-span-1 mb-8 bg-[#FFFFFD] rounded-[24px] flex items-center justify-center">
           <CarouselBox />
         </div>
       </div>

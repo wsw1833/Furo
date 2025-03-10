@@ -36,23 +36,23 @@ export default function RemindBox({ reminders, display }) {
   if (display) {
     limitedItems = reminders;
   } else {
-    limitedItems = reminders.slice(0, 3);
+    limitedItems = reminders.slice(0, 2);
   }
 
   return (
     <div
       className={`${
         display
-          ? 'grid md:grid-cols-3 grid-cols-2 col-span-1 gap-4'
-          : 'flex-col'
-      } w-full flex container h-full xl:mb-0 lg:mb-10 md:p-6`}
+          ? 'grid sm:grid-cols-3 grid-cols-2 col-span-1 md:gap-10 gap-6 md:mx-0 sm:mx-2'
+          : 'flex-col xl:mb-0 md:px-6'
+      } md:w-full flex container h-max `}
     >
       {limitedItems.map((reminder) => (
         <div
           key={reminder._id}
           className={`${
-            display ? 'flex flex-col py-4' : 'flex-row '
-          } w-full flex xl:items-center xl:justify-between lg:justify-between lg:items-center justify-between items-center md:px-18 px-6 py-1 md:my-8 my-4 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
+            display ? 'flex flex-col sm:p-10 md:p-12 p-6' : 'flex-row px-4 p-2'
+          } w-full flex xl:items-center xl:justify-between lg:justify-between lg:items-center justify-between items-center my-4 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <span
             className={`${
@@ -64,7 +64,7 @@ export default function RemindBox({ reminders, display }) {
             width={500}
             height={500}
             alt="activities"
-            className={`${display ? 'mb-4' : ''} md:w-10 md:h-10 w-6 h-6`}
+            className={`${display ? 'mb-4' : ''} md:w-10 md:h-10 w-8 h-8`}
           />
           <div
             className={`${

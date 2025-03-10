@@ -12,7 +12,7 @@ import groom from '@images/pet-bath.png';
 import deworm from '@images/deworm.png';
 import defaultIcon from '@images/pet-health.png';
 import Link from 'next/link';
-import { dateFormat } from '@/lib/utils';
+import { dateFormat, formatAddress } from '@/lib/utils';
 
 const activityIcons = {
   CheckUps: checkup,
@@ -72,69 +72,93 @@ export default function Activity({ records, display }) {
   return (
     <div
       className={`${
-        display ? 'h-full' : 'h-max'
+        display ? 'h-full items-center justify-center' : 'h-max'
       } container flex flex-col w-full`}
     >
       {limitedItems.map((record) => (
         <div
           key={record._id}
-          className={`w-full h-full flex xl:flex-row justify-around lg:flex-col ${
-            display ? 'flex-col' : 'flex-row'
-          } lg:justify-center items-center mt-2 xl:py-1 py-4 xl:px-4 px-6 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
+          className={`w-full h-full flex justify-between ${
+            display
+              ? 'md:flex-row flex-col p-4 xl:w-[55rem] w-full'
+              : 'xl:flex-row lg:flex-col md:flex-row l px-4 py-1'
+          } items-center mt-2 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <Image
             src={getActivityIcon(record.petActivity)}
             alt="activities"
-            className="lg:w-8 lg:h-8 w-10 h-10"
+            className={`${
+              display ? 'md:w-10 md:h-10 w-8 h-8' : 'sm:w-6 sm:h-6 w-8 h-8'
+            }`}
           />
           <div
-            className={`flex flex-col w-max h-max mx-4 xl:items-start lg:items-center ${
+            className={`flex flex-col w-max h-max mx-4 md:items-start ${
               display ? 'items-center' : 'items-start'
             }
           `}
           >
-            <p className="w-max font-medium xl:text-lg lg:text-base">
+            <p className="w-max font-medium xl:text-lg sm:text-base ">
               {`Pet ` + record.petActivity}
             </p>
-            <p className="w-max font-light xl:text-sm md:text-xs text-base">
+            <p className="w-max font-light xl:text-sm md:text-base text-sm">
               {record.petLocation}
             </p>
           </div>
-          <p className="font-medium w-[10rem] text-base flex justify-center">
+          <p
+            className={`font-medium w-[10rem] sm:text-base text-sm flex ${
+              display ? 'justify-center' : 'justify-center'
+            } `}
+          >
             {dateFormat(record.createdAt)}
           </p>
           {display && (
             <div className=" flex flex-col h-[6rem]">
-              <div className="w-full h-full flex flex-row justify-between items-center">
-                <div className="flex flex-row gap-2 items-center justify-center">
-                  <Image src={kg} alt="weight" className="w-6 h-6" />
-                  <p className="w-max font-medium text-base">
+              <div className="w-full h-full flex flex-row sm:justify-between justify-around items-center">
+                <div className="flex flex-row sm:gap-2 items-center justify-center">
+                  <Image
+                    src={kg}
+                    alt="weight"
+                    className="sm:w-6 sm:h-6 w-5 h-5"
+                  />
+                  <p className="w-max font-medium sm:text-base text-sm">
                     Weight: {record.petWeight}kg
                   </p>
                 </div>
-                <div className="flex flex-row gap-2 items-center justify-center">
-                  <Image src={condition} alt="condition" className="w-6 h-6" />
-                  <p className="w-max font-medium text-base">
+                <div className="flex flex-row sm:gap-2 items-center justify-center">
+                  <Image
+                    src={condition}
+                    alt="condition"
+                    className="sm:w-6 sm:h-6 w-5 h-5"
+                  />
+                  <p className="w-max font-medium sm:text-base text-sm">
                     Condition: {record.petCondition}
                   </p>
                 </div>
               </div>
-              <div className="w-full h-full flex flex-row justify-between items-center lg:gap-10">
-                <div className="flex flex-row gap-2 items-center justify-center">
-                  <Image src={user} alt="profile" className="w-6 h-6" />
-                  <p className="w-max font-medium text-sm">
-                    User: {record.walletAddress}
+              <div className="w-full h-full flex flex-row sm:justify-between justify-around items-center sm:gap-10 gap-4">
+                <div className="flex flex-row sm:gap-2 items-center justify-center">
+                  <Image
+                    src={user}
+                    alt="profile"
+                    className="sm:w-6 sm:h-6 w-5 h-5"
+                  />
+                  <p className="w-max font-medium sm:text-sm text-xs">
+                    User: {formatAddress(record.walletAddress)}
                   </p>
                 </div>
-                <div className="flex flex-row gap-2 items-center justify-center">
+                <div className="flex flex-row sm:gap-2 gap-1 items-center justify-center">
                   <Link
                     href={'http'}
                     target="_blank"
-                    className="w-max font-light text-sm underline text-[#2B87FF]"
+                    className="w-max font-light sm:text-sm text-xs underline text-[#2B87FF]"
                   >
                     View on ScrollScan
                   </Link>
-                  <Image src={scroll} alt="scroll" className="w-6 h-6" />
+                  <Image
+                    src={scroll}
+                    alt="scroll"
+                    className="sm:w-6 sm:h-6 w-5 h-5"
+                  />
                 </div>
               </div>
             </div>

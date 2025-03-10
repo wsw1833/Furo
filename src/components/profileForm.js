@@ -303,7 +303,12 @@ export default function ProfileForm({ addr }) {
             className="w-fit px-6 flex flex-row items-center justify-center bg-[#FFC65C] text-[#181818] hover:bg-[#F89D47] transition hover:duration-300 font-semibold sm:text-lg text-base"
           >
             {isSubmitting ? 'Creating...' : 'Create'}
-            <Image src={card} alt="card" className="w-fit h-fit" />
+            <Image
+              src={card}
+              priority={true}
+              alt="card"
+              className="w-fit h-fit"
+            />
           </Button>
         </form>
       </Form>

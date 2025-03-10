@@ -19,10 +19,10 @@ export default function CarouselBox() {
   );
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-fit h-fit flex items-center justify-center">
       <Carousel
         plugins={[plugin.current]}
-        className="w-full max-w-xs p-0 items-center justify-center"
+        className="w-fit h-fit max-w-xs p-0 items-center justify-center"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
@@ -30,7 +30,12 @@ export default function CarouselBox() {
           {Array.from({ length: 4 }).map((_, index) => (
             <CarouselItem key={index}>
               <div className="lg:w-full lg:h-full md:w-30 md:h-30 w-max h-max flex items-center aspect-auto justify-center">
-                <Image src={items[index]} alt="images" priority className="" />
+                <Image
+                  src={items[index]}
+                  alt="images"
+                  priority
+                  className="pl-0"
+                />
               </div>
             </CarouselItem>
           ))}

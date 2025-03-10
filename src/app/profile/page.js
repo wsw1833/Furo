@@ -32,8 +32,8 @@ export default function ProfilePage() {
   }, [address]);
 
   const dashboardHandler = (petId) => {
-    localStorage.setItem('selectedPetId', petId);
     router.push(`/dashboard/${petId}`);
+    localStorage.setItem('selectedPetId', petId);
   };
 
   const addProfileHandler = () => {
@@ -49,6 +49,7 @@ export default function ProfilePage() {
           </p>
           <Image
             src={addIcon}
+            priority={true}
             alt="addIcon"
             className="w-12 h-12 sm:hidden"
             onClick={addProfileHandler}
@@ -58,6 +59,7 @@ export default function ProfilePage() {
           Select Your Furry
           <Image
             src={petpaw}
+            priority={true}
             alt="petpaw"
             className="w-4 h-4 md:w-6 md:h-6"
           ></Image>
@@ -74,30 +76,32 @@ export default function ProfilePage() {
           ></Image>
         </Button>
       </div>
-      {isLoading && profile.petImage ? (
-        <div className="flex items-center justify-center">
+      {isLoading ? (
+        <div className="flex items-center justify-center w-full h-[20rem]">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
       ) : (
-        <div className="lg:w-[70%] w-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 place-items-center overflow-y-auto">
+        <div className="md:w-[80%] w-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 place-items-center overflow-y-auto">
           {profile.map((pet) => (
             <div
               key={pet._id}
               onClick={() => dashboardHandler(pet._id)}
-              className="col-span-1 md:w-40 lg:w-46 w-38 h-70 my-6 bg-white border-2 rounded-[20px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col justify-center items-center hover:bg-[#FFC65C] transition hover:duration-200"
+              className="col-span-1 w-50 h-70 my-6 bg-white border-2 rounded-[20px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col justify-center items-center hover:bg-[#FFC65C] transition hover:duration-200"
             >
               <Image
                 src={pet.petImage}
                 width={500}
                 height={500}
                 alt="pet"
-                className="lg:w-40 lg:h-40 md:w-34 md:h-34 w-30 h-30 rounded-[16px]"
+                className="md:w-38 md:h-38 w-38 h-38 rounded-[16px]"
               />
-              <p className="sm:text-sm font-medium text-xs text-[#484848] pt-1">
+              <p className="sm:text-base text-lg font-medium text-[#484848] pt-1">
                 {pet.petType}
               </p>
-              <p className="sm:text-xl font-semibold mt-2">{pet.petName}</p>
-              <p className="sm:text-sm font-medium text-xs text-[#484848] pt-2">
+              <p className="sm:text-xl text-xl font-semibold mt-2">
+                {pet.petName}
+              </p>
+              <p className="md:text-base font-medium text-lg text-[#484848] pt-2">
                 {pet.petBreed}
               </p>
             </div>

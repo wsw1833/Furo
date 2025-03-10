@@ -105,7 +105,12 @@ export default function AddMember({ petId, onSuccess }) {
             'w-fit bg-[#FFC65C] shadow-[0_3px_10px_rgb(0,0,0,0.2)] mt-6 text-[#181818] font-semibold rounded-[12px] text-lg items-center justify-center hover:bg-[#F89D47] transition hover:duration-300'
           }
         >
-          <Image src={add} alt="addIcon" className="w-10 h-10" />
+          <Image
+            src={add}
+            priority={true}
+            alt="addIcon"
+            className="w-10 h-10"
+          />
           {isSubmitting ? 'Adding...' : 'Add Record'}
         </Button>
       </div>

@@ -51,7 +51,7 @@ export default function ImageUploadPreview({ onChange }) {
             alt="upload"
             className="w-fit h-fit lg:w-20 lg:h-20"
           />
-          <p className="mt-4 text-gray-500 font-medium lg:text-base text-xs">
+          <p className="mt-4 text-gray-500 font-medium lg:text-base text-xs flex item-center justify-center w-max">
             Upload Image Here
           </p>
         </div>
