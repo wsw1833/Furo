@@ -76,6 +76,8 @@ export default function Dashboard() {
           <div className="flex flex-row w-full items-center justify-start gap-2 p-4">
             <Image
               src={Petpaw}
+              width={500}
+              height={500}
               alt="petPaw"
               className="md:w-8 md:h-8 w-6 h-6"
             />
@@ -119,7 +121,7 @@ export default function Dashboard() {
           )}
         </div>
         <div className="lg:col-span-3 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] rounded-[24px] p-4 h-full md:mb-8 mb-4 ">
-          <QRBox />
+          <QRBox petId={petId} />
         </div>
         <div className="lg:col-span-4 lg:row-span-1 col-span-2 row-span-1 bg-[#FFFFFD] mb-8 rounded-[24px] p-4">
           <div className="flex flex-row items-center justify-start gap-2 mb-2">

@@ -4,7 +4,7 @@ import animals from '@images/animals.jpg';
 import icon from '@images/icon.png';
 import scroll from '@images/scroll.png';
 import metamask from '@images/metamask.png';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
@@ -12,11 +12,15 @@ import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 export default function Home() {
   const { address, isConnected, chain } = useAccount();
   const { connect, connectors } = useConnect();
-  const { switchChain, chains } = useSwitchChain();
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const returnUrl = searchParams ? searchParams.get('returnUrl') : null;
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && returnUrl) {
+      router.push(returnUrl);
+    }
+    if (isConnected && returnUrl == null) {
       router.push('/profile');
     }
   }, [isConnected, router]);

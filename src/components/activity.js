@@ -80,7 +80,7 @@ export default function Activity({ records, display }) {
           key={record._id}
           className={`w-full h-full flex xl:flex-row justify-around lg:flex-col ${
             display ? 'flex-col' : 'flex-row'
-          } lg:justify-center items-center justify-between mt-2 xl:py-1 py-4 xl:px-4 px-6 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
+          } lg:justify-center items-center mt-2 xl:py-1 py-4 xl:px-4 px-6 my-3 xl:gap-none gap-2 shadow-[0_3px_10px_rgb(0,0,0,0.1)] rounded-[16px]`}
         >
           <Image
             src={getActivityIcon(record.petActivity)}
@@ -94,7 +94,7 @@ export default function Activity({ records, display }) {
           `}
           >
             <p className="w-max font-medium xl:text-lg lg:text-base">
-              {record.petActivity}
+              {`Pet ` + record.petActivity}
             </p>
             <p className="w-max font-light xl:text-sm md:text-xs text-base">
               {record.petLocation}
