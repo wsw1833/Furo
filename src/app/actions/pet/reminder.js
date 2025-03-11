@@ -4,7 +4,8 @@ import { revalidatePath } from 'next/cache';
 
 export async function fetchReminder(petID) {
   try {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/reminder?petId=${petID}`);
     if (!response.ok) {
       const errorData = await response.json();
@@ -21,7 +22,8 @@ export async function fetchReminder(petID) {
 
 export async function addReminder(formData) {
   try {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/reminder`, {
       method: 'POST',
       headers: {

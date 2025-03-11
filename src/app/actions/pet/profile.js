@@ -1,6 +1,7 @@
 export async function fetchPetProfile(id) {
   try {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/petprofile?petId=${id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch pet profile');
@@ -14,7 +15,8 @@ export async function fetchPetProfile(id) {
 
 export async function fetchAllPetProfile(address) {
   try {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
     const response = await fetch(
       `${baseUrl}/api/user?walletAddress=${address}`
     );

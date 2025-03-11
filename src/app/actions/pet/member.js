@@ -4,7 +4,8 @@ import { revalidatePath } from 'next/cache';
 
 export async function fetchMembers(petID) {
   try {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/member?petId=${petID}`);
     if (!response.ok) {
       const errorData = await response.json();
@@ -20,7 +21,8 @@ export async function fetchMembers(petID) {
 
 export async function addMember(formData) {
   try {
-    const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/member`, {
       method: 'POST',
       headers: {
