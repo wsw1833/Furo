@@ -31,9 +31,10 @@ export default function ProfilePage() {
     loadProfile();
   }, [address]);
 
-  const dashboardHandler = (petId) => {
+  const dashboardHandler = (petId, tokenId) => {
     router.push(`/dashboard/${petId}`);
     localStorage.setItem('selectedPetId', petId);
+    localStorage.setItem('tokenId', tokenId);
   };
 
   const addProfileHandler = () => {
@@ -41,8 +42,8 @@ export default function ProfilePage() {
     router.push('/create');
   };
   return (
-    <div className="flex flex-col sm:items-center sm:justify-center h-max w-full">
-      <div className="flex flex-col sm:items-center sm:px-0 px-6 justify-center items-start font-inter">
+    <div className="flex flex-col sm:items-center sm:justify-center h-full w-full overflow-auto">
+      <div className="flex flex-col sm:items-center sm:px-0 px-6 justify-center items-start font-inter h-full">
         <div className="flex flex-row items-center">
           <p className="text-2xl md:text-3xl lg:text-4xl font-semibold">
             Furry Profile
@@ -81,15 +82,15 @@ export default function ProfilePage() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
       ) : (
-        <div className="md:w-[80%] w-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 place-items-center overflow-y-auto">
+        <div className="md:w-[80%] w-full h-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 place-items-center overflow--auto">
           {profile.map((pet) => (
             <div
               key={pet._id}
-              onClick={() => dashboardHandler(pet._id)}
+              onClick={() => dashboardHandler(pet._id, pet.tokenId)}
               className="col-span-1 w-50 h-70 my-6 bg-white border-2 rounded-[20px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col justify-center items-center hover:bg-[#FFC65C] transition hover:duration-200"
             >
               <Image
-                src={pet.petImage}
+                src={pet.petImage ? pet.petImage : ''}
                 width={500}
                 height={500}
                 alt="pet"

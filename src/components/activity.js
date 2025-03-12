@@ -72,13 +72,13 @@ export default function Activity({ records, display }) {
   return (
     <div
       className={`${
-        display ? 'h-full items-center justify-center' : 'h-max'
+        display ? 'h-full items-center' : 'h-max'
       } container flex flex-col w-full`}
     >
       {limitedItems.map((record) => (
         <div
           key={record._id}
-          className={`w-full h-full flex justify-between ${
+          className={`w-full h-max flex justify-between ${
             display
               ? 'md:flex-row flex-col p-4 xl:w-[55rem] w-full'
               : 'xl:flex-row lg:flex-col md:flex-row l px-4 py-1'
@@ -148,7 +148,7 @@ export default function Activity({ records, display }) {
                 </div>
                 <div className="flex flex-row sm:gap-2 gap-1 items-center justify-center">
                   <Link
-                    href={'http'}
+                    href={`https://sepolia.scrollscan.com/tx/${record.txHash}`}
                     target="_blank"
                     className="w-max font-light sm:text-sm text-xs underline text-[#2B87FF]"
                   >

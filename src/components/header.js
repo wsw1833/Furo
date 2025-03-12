@@ -5,6 +5,8 @@ import explorer from '@images/explorer.png';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import hamburger from '@images/hamburger.png';
+import Link from 'next/link';
+import { petRecordSystem } from '@/lib/constant';
 
 export default function Header({ addr, QR }) {
   return (
@@ -16,18 +18,24 @@ export default function Header({ addr, QR }) {
         </p>
       </div>
       <div className="w-max md:flex flex-row gap-4">
-        <Button
-          className={`${
-            QR ? 'hidden' : 'lg:flex hidden'
-          } w-14 h-14 bg-[#E9E6DD] shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-[#181818] font-medium rounded-[20px] text-lg items-center justify-center hover:bg-[#FFC65C] transition hover:duration-300 `}
+        <Link
+          target="_blank"
+          href={`https://sepolia.scrollscan.com/address/${petRecordSystem}`}
         >
-          <Image
-            src={explorer}
-            priority={true}
-            alt="explorer"
-            className="w-fit h-fit"
-          />
-        </Button>
+          <div
+            className={`${
+              QR ? 'hidden' : 'lg:flex hidden'
+            } w-14 h-14 bg-[#E9E6DD] shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-[#181818] font-medium rounded-[20px] text-lg items-center justify-center hover:bg-[#FFC65C] transition hover:duration-300 `}
+          >
+            <Image
+              src={explorer}
+              priority={true}
+              alt="explorer"
+              className="w-fit h-fit"
+            />
+          </div>
+        </Link>
+
         <Button
           className={`
             w-fit h-14 bg-[#E9E6DD] shadow-[0_3px_10px_rgb(0,0,0,0.2)] text-[#181818] font-medium rounded-[20px] md:text-lg text-base items-center justify-center hover:bg-[#FFC65C] transition hover:duration-300 ${

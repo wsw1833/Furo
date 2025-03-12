@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import card from '@images/card.png';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, ipfsURL } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import ImageUploadPreview from './uploader';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,11 @@ import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { Calendar } from './ui/calendar';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { petRecordSystem } from '@/lib/constant';
+import petRecordSystemABI from '../ABI/petRecordSystem';
+import { useWriteContract } from 'wagmi';
+import { config } from 'wagmi.config.mjs';
+import { waitForTransactionReceipt } from '@wagmi/core';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
@@ -55,8 +60,33 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm({ addr }) {
+  const CONTRACT_ADDRESS = petRecordSystem;
+  const CONTRACT_ABI = petRecordSystemABI;
+  const { writeContractAsync } = useWriteContract();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleMintPet = async (address, petTokenUri) => {
+    try {
+      const hash = await writeContractAsync({
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'mintPet',
+        args: [address, petTokenUri],
+      });
+
+      const result = await waitForTransactionReceipt(config, { hash });
+      if (result.status === 'reverted') {
+        throw new Error('Error occured during executing!');
+      }
+      const tokenIdHex = result.logs[0].topics[3];
+      const tokenId = BigInt(tokenIdHex).toString();
+      return { hash: result.transactionHash, tokenId };
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -70,6 +100,15 @@ export default function ProfileForm({ addr }) {
       petImage: '',
     },
   });
+
+  const submitPetIPFS = async (data) => {
+    const response = await fetch('/api/ipfs', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    const cid = await response.json();
+    return cid;
+  };
 
   const submitImageS3 = async (petImage) => {
     try {
@@ -102,14 +141,25 @@ export default function ProfileForm({ addr }) {
         birthDay: data.birthDay.toISOString(),
         petImage: imageURL,
       };
-      console.log('Submitting data:', formData);
-      // from here submit image to S3 to get URL
+
+      const cid = await submitPetIPFS(formData);
+      const ipfsUrl = ipfsURL(cid);
+
+      const { hash, tokenId } = await handleMintPet(addr, ipfsUrl);
+
+      const formData2 = {
+        ...formData,
+        IPFS: ipfsUrl,
+        txHash: hash,
+        tokenId: tokenId,
+      };
+
       const response = await fetch('/api/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData2),
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -118,9 +168,13 @@ export default function ProfileForm({ addr }) {
         );
       }
       const result = await response.json();
-      console.log(result);
-      router.push(`/dashboard/${result.data._id}`);
-      form.reset();
+      if (result.success) {
+        console.log(result);
+        localStorage.setItem('selectedPetId', result.data._id);
+        localStorage.setItem('tokenId', tokenId);
+        router.push(`/dashboard/${result.data._id}`);
+        form.reset();
+      }
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {

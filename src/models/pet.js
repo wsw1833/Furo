@@ -33,11 +33,15 @@ const petSchema = new mongoose.Schema({
   },
   IPFS: {
     type: String,
-    required: false,
+    required: true,
+  },
+  txHash: {
+    type: String,
+    required: true,
   },
   tokenId: {
     type: String,
-    required: false,
+    required: true,
   },
   createdAt: {
     type: Date,

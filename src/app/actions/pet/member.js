@@ -43,3 +43,28 @@ export async function addMember(formData) {
     return { success: false, status: 400, error: err.message };
   }
 }
+
+export async function deleteMember(walletAddress) {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
+    const response = await fetch(
+      `${baseUrl}/api/member?walletAddress=${walletAddress}`,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    const result = await response.json();
+
+    if (result.success) {
+      console.log(`Successfully deleted ${result.deletedCount} records`);
+      return result;
+    } else {
+      throw new Error(result.error || 'Failed to delete records');
+    }
+  } catch (error) {
+    console.error('Error deleting records:', error);
+    throw error;
+  }
+}

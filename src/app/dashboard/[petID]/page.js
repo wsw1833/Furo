@@ -68,7 +68,10 @@ export default function Dashboard() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
           ) : (
-            <ActivityPage records={recordData.record || []} display={false} />
+            <ActivityPage
+              records={recordData.record || []}
+              display={false}
+            />
           )}
         </div>
         {/* pet profile */}
@@ -90,7 +93,7 @@ export default function Dashboard() {
           ) : (
             <div className="flex relative flex-col items-center justify-center w-full">
               <Image
-                src={profile.petImage}
+                src={profile.petImage ? profile.petImage : null}
                 width={500}
                 height={500}
                 alt="petImage"

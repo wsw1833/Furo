@@ -1,7 +1,4 @@
-import { cookieToInitialState } from 'wagmi';
 import './globals.css';
-import { getConfig } from '../../wagmi.config.mjs';
-import { headers } from 'next/headers';
 import { Providers } from './providers';
 
 export const metadata = {
@@ -10,14 +7,10 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const initialState = cookieToInitialState(
-    getConfig(),
-    (await headers()).get('cookie')
-  );
   return (
     <html lang="en">
       <body className={`antialiased sm:overflow-hidden overflow-auto`}>
-        <Providers initialState={initialState}>{children}</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

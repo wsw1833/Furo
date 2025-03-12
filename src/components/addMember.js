@@ -8,6 +8,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { addMember } from '@/app/actions/pet/member';
+import { petRecordSystem } from '@/lib/constant';
+import petRecordSystemABI from '../ABI/petRecordSystem';
+import { useWriteContract } from 'wagmi';
+import { config } from 'wagmi.config.mjs';
+import { waitForTransactionReceipt } from '@wagmi/core';
 
 const formSchema = z.object({
   name: z.string({
@@ -24,7 +29,30 @@ const formSchema = z.object({
 });
 
 export default function AddMember({ petId, onSuccess }) {
+  const CONTRACT_ADDRESS = petRecordSystem;
+  const CONTRACT_ABI = petRecordSystemABI;
+  const { writeContractAsync } = useWriteContract();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleAddProvider = async (provider, name) => {
+    try {
+      const hash = await writeContractAsync({
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'registerServiceProvider',
+        args: [provider, name],
+      });
+
+      const result = await waitForTransactionReceipt(config, { hash });
+      if (result.status === 'reverted') {
+        throw new Error('Error occured during executing!');
+      }
+
+      return { hash: result.transactionHash.toString() };
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const {
     register,
@@ -44,10 +72,13 @@ export default function AddMember({ petId, onSuccess }) {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
+      const { hash } = await handleAddProvider(data.walletAddress, data.name);
       const formData = {
         petId: petId,
         ...data,
+        txHash: hash,
       };
+
       const response = await addMember(formData);
       if (response.success) {
         reset();

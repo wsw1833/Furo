@@ -18,6 +18,10 @@ const memberSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please state the working location'],
   },
+  txHash: {
+    type: String,
+    required: true,
+  },
   AddedAt: {
     type: Date,
     default: Date.now,

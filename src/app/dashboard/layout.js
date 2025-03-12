@@ -1,22 +1,20 @@
 'use client';
 
-import { useEffect } from 'react';
 import Header from '@/components/header';
 import Sidebar from '@/components/sidebar';
 import { formatAddress } from '@/lib/utils';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
+import { useAccountEffect } from 'wagmi';
 
 export default function DashboardLayout({ children }) {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!isConnected) {
-      router.push('/');
-    }
-  }, [isConnected, router]);
-
+  useAccountEffect({
+    onDisconnect() {
+      router.push(`/`);
+    },
+  });
   return (
     <div className={`h-screen xl:overflow-hidden overflow-auto`}>
       <Header addr={address ? formatAddress(address) : ''} QR={false} />

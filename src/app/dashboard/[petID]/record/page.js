@@ -19,12 +19,15 @@ import { fetchRecord } from '@/app/actions/pet/record';
 export default function RecordPage() {
   const [open, setOpen] = useState(false);
   const [petId, setPetId] = useState(null);
+  const [tokenId, setTokenId] = useState(null);
   const [recordData, setRecordData] = useState({ record: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const id = localStorage.getItem('selectedPetId');
+    const tokenId = localStorage.getItem('tokenId');
     setPetId(id);
+    setTokenId(tokenId);
 
     // Fetch data once we have the petId
     if (id) {
@@ -89,6 +92,7 @@ export default function RecordPage() {
                   setOpen={setOpen}
                   onSuccess={refreshRecords}
                   location={false}
+                  tokenId={tokenId}
                 />
               )}
             </DialogContent>

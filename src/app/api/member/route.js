@@ -36,3 +36,37 @@ export async function POST(req, res) {
     );
   }
 }
+
+export async function DELETE(req, res) {
+  const { searchParams } = req.nextUrl;
+  const walletAddress = searchParams.get('walletAddress');
+
+  if (!walletAddress) {
+    return NextResponse.json(
+      { success: false, message: 'walletAddress is missing' },
+      { status: 400 }
+    );
+  }
+
+  await dbConnect();
+  try {
+    const result = await Member.findOneAndDelete({
+      walletAddress: walletAddress,
+    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        deletedCount: result.deletedCount,
+        message: `${result.deletedCount} member records deleted successfully`,
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error('Delete error:', err);
+    return NextResponse.json(
+      { success: false, error: err.message },
+      { status: 500 }
+    );
+  }
+}

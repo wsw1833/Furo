@@ -24,8 +24,14 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { useAccount } from 'wagmi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addRecord } from '@/app/actions/pet/record';
+import { ipfsURL } from '@/lib/utils';
+import { petRecordSystem } from '@/lib/constant';
+import petRecordSystemABI from '../ABI/petRecordSystem';
+import { useWriteContract } from 'wagmi';
+import { config } from 'wagmi.config.mjs';
+import { waitForTransactionReceipt } from '@wagmi/core';
 
 // Define the validation schema with Zod
 const formSchema = z.object({
@@ -42,9 +48,28 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddRecordForm({ petId, setOpen, onSuccess, location }) {
+const recordMapping = {
+  CheckUps: 0,
+  Surgery: 1,
+  Vaccination: 2,
+  Grooming: 3,
+  Deworming: 4,
+};
+
+export default function AddRecordForm({
+  petId,
+  setOpen,
+  onSuccess,
+  location,
+  tokenId,
+  owner,
+}) {
+  const CONTRACT_ADDRESS = petRecordSystem;
+  const CONTRACT_ABI = petRecordSystemABI;
+  const { writeContractAsync } = useWriteContract();
   const { address } = useAccount();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Initialize the form with useForm hook
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -57,6 +82,46 @@ export default function AddRecordForm({ petId, setOpen, onSuccess, location }) {
     },
   });
 
+  const recordMapToValue = (record) => {
+    return recordMapping[record] !== undefined ? recordMapping[record] : null;
+  };
+
+  const submitPetIPFS = async (data) => {
+    const response = await fetch('/api/ipfs', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    const cid = await response.json();
+    return cid;
+  };
+
+  const handleMintPetRecord = async (
+    address,
+    petTokenId,
+    record,
+    petTokenUri
+  ) => {
+    try {
+      const recordValue = recordMapToValue(record);
+      const hash = await writeContractAsync({
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'addPetRecord',
+        args: [address, petTokenId, recordValue, petTokenUri],
+      });
+
+      const result = await waitForTransactionReceipt(config, { hash });
+      if (result.status === 'reverted') {
+        throw new Error('Error occured during executing!');
+      }
+      const tokenIdHex = await result.logs[0].topics[3];
+      const tokenId = BigInt(tokenIdHex).toString();
+      return { hash: result.transactionHash, recordTokenId: tokenId };
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   // Define the submit handler
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -65,7 +130,37 @@ export default function AddRecordForm({ petId, setOpen, onSuccess, location }) {
         petId: petId,
         ...data,
       };
-      const response = await addRecord(formData);
+      const cid = await submitPetIPFS(formData);
+      const ipfsUrl = ipfsURL(cid);
+
+      let mintResult;
+
+      if (location) {
+        mintResult = await handleMintPetRecord(
+          owner.walletAddress,
+          owner.tokenId,
+          data.petActivity,
+          ipfsUrl
+        );
+      } else {
+        mintResult = await handleMintPetRecord(
+          address,
+          tokenId,
+          data.petActivity,
+          ipfsUrl
+        );
+      }
+
+      const { hash, recordTokenId } = mintResult;
+
+      const formData2 = {
+        ...formData,
+        IPFS: ipfsUrl,
+        txHash: hash,
+        tokenId: recordTokenId,
+      };
+
+      const response = await addRecord(formData2);
       if (response.success) {
         form.reset();
         setOpen(false);
@@ -123,11 +218,10 @@ export default function AddRecordForm({ petId, setOpen, onSuccess, location }) {
                 <FormLabel>Pet Health & Grooming Location</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter The Location"
-                    disabled={location}
+                    placeholder={`Enter the location`}
                     {...field}
                     className={`${
-                      location ? 'bg-zinc-100' : ''
+                      location ? '' : ''
                     } w-[20rem] sm:text-base text-sm text-center text-[#000000]`}
                   />
                 </FormControl>

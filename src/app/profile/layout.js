@@ -11,5 +11,5 @@ export default function ProfileLayout({ children }) {
       router.push(`/`);
     },
   });
-  return <div className={`my-8 overflow-auto`}>{children}</div>;
+  return <div className={`my-8 h-full overflow-auto`}>{children}</div>;
 }
