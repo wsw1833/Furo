@@ -32,7 +32,7 @@ import { Calendar } from './ui/calendar';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { petRecordSystem } from '@/lib/constant';
-import petRecordSystemABI from '@/ABI/petRecordSystem';
+import petRecordSystemABI from '@/ABI/petRecordSystem.json';
 import { useWriteContract } from 'wagmi';
 import { config } from 'wagmi.config.mjs';
 import { waitForTransactionReceipt } from '@wagmi/core';

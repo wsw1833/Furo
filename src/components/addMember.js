@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { addMember } from '@/app/actions/pet/member';
 import { petRecordSystem } from '@/lib/constant';
-import petRecordSystemABI from '@/ABI/petRecordSystem';
+import petRecordSystemABI from '@/ABI/petRecordSystem.json';
 import { useWriteContract } from 'wagmi';
 import { config } from 'wagmi.config.mjs';
 import { waitForTransactionReceipt } from '@wagmi/core';

@@ -28,7 +28,7 @@ import { useEffect, useState } from 'react';
 import { addRecord } from '@/app/actions/pet/record';
 import { ipfsURL } from '@/lib/utils';
 import { petRecordSystem } from '@/lib/constant';
-import petRecordSystemABI from '@/ABI/petRecordSystem';
+import petRecordSystemABI from '@/ABI/petRecordSystem.json';
 import { useWriteContract } from 'wagmi';
 import { config } from 'wagmi.config.mjs';
 import { waitForTransactionReceipt } from '@wagmi/core';
