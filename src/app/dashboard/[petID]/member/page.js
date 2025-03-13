@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { petRecordSystem } from '@/lib/constant';
-import petRecordSystemABI from '../../../../ABI/petRecordSystem';
+import petRecordSystemABI from '@/ABI/petRecordSystem';
 import { config } from 'wagmi.config.mjs';
 
 export default function MemberPage() {

@@ -32,7 +32,7 @@ import { Calendar } from './ui/calendar';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { petRecordSystem } from '@/lib/constant';
-import petRecordSystemABI from '../ABI/petRecordSystem';
+import petRecordSystemABI from '@/ABI/petRecordSystem';
 import { useWriteContract } from 'wagmi';
 import { config } from 'wagmi.config.mjs';
 import { waitForTransactionReceipt } from '@wagmi/core';
@@ -135,6 +135,8 @@ export default function ProfileForm({ addr }) {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
+      //from here input stability
+      //and bg remover here before submit to s3
       const imageURL = await submitImageS3(data.petImage);
       const formData = {
         ...data,

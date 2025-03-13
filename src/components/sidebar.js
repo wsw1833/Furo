@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import { ChevronDown } from 'lucide-react';
 import member from '@images/profile.png';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useDisconnect } from 'wagmi';
 import { usePathname, useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
