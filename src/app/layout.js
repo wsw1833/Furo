@@ -9,6 +9,9 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/furo-yellow.svg" sizes="32x32" />
+      </head>
       <body className={`antialiased sm:overflow-hidden overflow-auto`}>
         <Providers>{children}</Providers>
       </body>

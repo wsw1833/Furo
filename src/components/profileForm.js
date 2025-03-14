@@ -108,7 +108,7 @@ export default function ProfileForm({ addr }) {
     formData.append('prompt', prompt);
     formData.append('output_format', 'png'); // Use PNG for transparency support
     formData.append('model', 'sd3.5-medium'); // using model SD 3.5 Medium
-    formData.append('strength', 0.5); // Adjust strength (0.1 to 1.0)
+    formData.append('strength', 0.6); // Adjust strength (0.1 to 1.0)
 
     try {
       const response = await fetch(
@@ -196,7 +196,7 @@ export default function ProfileForm({ addr }) {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const prompt = `Authentic 16-bit Pokémon-style pixel art of a ${data.petType} of  ${data.petBreed}, clean blocky shapes, minimal shading, vibrant bold colors, isolated on a transparent background.`;
+      const prompt = `Authentic 16-bit Pokémon-style pixel art of a ${data.petType} of ${data.petBreed}, minimal shading, vibrant bold colors, isolated on a transparent background.`;
       const generatedImageBuffer = await generateImage(data.petImage, prompt);
       const bgRemovedBuffer = await removeBgImage(generatedImageBuffer);
       const imageURL = await submitImageS3(bgRemovedBuffer);
@@ -331,6 +331,11 @@ export default function ProfileForm({ addr }) {
                     <SelectItem value="Dog">Dog</SelectItem>
                     <SelectItem value="Cat">Cat</SelectItem>
                     <SelectItem value="Hamster">Hamster</SelectItem>
+                    <SelectItem value="Rabbit">Rabbit</SelectItem>
+                    <SelectItem value="Parrot">Parrot</SelectItem>
+                    <SelectItem value="Turtle">Turtle</SelectItem>
+                    <SelectItem value="Gecko">Gecko</SelectItem>
+                    <SelectItem value="Snake">Snake</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import animals from '@images/animals.jpg';
-import icon from '@images/icon.png';
+import furo from '@images/furo.png';
 import scroll from '@images/scroll.png';
 import metamask from '@images/metamask.png';
 import { useRouter } from 'next/navigation';
@@ -55,9 +55,9 @@ export default function Home() {
           <div className="flex flex-row items-center sm:justify-start gap-2">
             <Image
               priority={true}
-              src={icon}
+              src={furo}
               alt="icon"
-              className="w-10 h-10 md:w-14 md:h-14 lg:w-18 lg:h-18"
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16"
             />
             <div className="text-3xl md:text-4xl lg:text-5xl font-semibold">
               Furo

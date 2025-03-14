@@ -89,24 +89,24 @@ export default function MemberPage() {
   };
   return (
     <div className="container flex w-full h-full">
-      <div className="m-4 px-10 flex flex-col w-full h-full gap-2 bg-[#FFFFFD] rounded-[24px]">
+      <div className="m-4 px-4 md:px-10 flex flex-col w-full h-full gap-2 bg-[#FFFFFD] rounded-[24px]">
         <Title page={'member'} />
         <MemberForm petId={petId} onSuccess={refreshMemberList} />
         <div className="w-full flex flex-col mt-6 items-center justify-center">
-          <p className="w-full font-semibold flex items-center justify-center md:text-xl text-lg">
+          <p className="w-full font-semibold flex items-center justify-center text-lg md:text-xl">
             Member List
           </p>
-          <div className="w-full grid grid-cols-4 lg:ml-22 md:ml-16 ml-10 items-center justify-center gap-4 p-2 mt-2">
-            <p className=" col-span-1 items-center justify-center md:text-lg text-base">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:ml-22 md:ml-16 ml-10 items-center justify-center gap-4 p-2 mt-2">
+            <p className="col-span-1 items-center justify-center text-base md:text-lg">
               Name
             </p>
-            <p className=" col-span-1 items-center justify-center md:text-lg text-base">
+            <p className="col-span-1 items-center justify-center text-base md:text-lg">
               Wallet Address
             </p>
-            <p className=" col-span-1 items-center justify-center md:text-lg text-base">
+            <p className="col-span-1 items-center justify-center text-base md:text-lg">
               Location
             </p>
-            <p className="col-span-1 items-center justify-center md:text-lg text-base">
+            <p className="col-span-1 items-center justify-center text-base md:text-lg">
               Remove
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function MemberPage() {
             memberList.map((member) => (
               <div
                 key={member._id}
-                className="w-full grid grid-cols-4 lg:ml-22 md:ml-16 ml-10 items-center justify-around gap-4 p-2 border-b"
+                className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:ml-22 md:ml-16 ml-10 items-center justify-around gap-4 p-2 border-b"
               >
                 <span className="col-span-1">{member.name}</span>
                 <span className="col-span-1">
@@ -129,7 +129,7 @@ export default function MemberPage() {
                 </span>
                 <Button
                   onClick={() => handleRemoveMember(member.walletAddress)}
-                  className="col-span-1 w-[8rem] bg-red-400 font-bold text-base transition hover:duration-300 hover:bg-red-600"
+                  className="col-span-1 w-full sm:w-[8rem] bg-red-400 font-bold text-base transition hover:duration-300 hover:bg-red-600"
                 >
                   Remove
                 </Button>

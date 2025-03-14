@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import icon from '@images/icon.png';
+import furo from '@images/furo.png';
 import metamask from '@images/metamask.png';
 import explorer from '@images/explorer.png';
 import Image from 'next/image';
@@ -74,7 +74,7 @@ export default function Header({ addr, QR }) {
     <>
       <div className="w-full flex items-center justify-between p-6">
         <div className="flex flex-row items-center justify-center gap-2">
-          <Image src={icon} priority={true} alt="icon" className="w-14 h-14" />
+          <Image src={furo} priority={true} alt="icon" className="w-14 h-14" />
           <p className="font-semibold md:text-3xl text-2xl md:block hidden">
             Furo
           </p>
@@ -145,12 +145,12 @@ export default function Header({ addr, QR }) {
           <div className="flex justify-between items-center ">
             <div className="flex items-center gap-2">
               <Image
-                src={icon}
+                src={furo}
                 priority={true}
                 alt="icon"
-                className="w-10 h-10"
+                className="w-12 h-12"
               />
-              <p className="font-semibold text-xl">Furo</p>
+              <p className="font-semibold text-2xl">Furo</p>
             </div>
             <button
               onClick={toggleSidebar}

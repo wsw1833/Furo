@@ -7,6 +7,7 @@ import { fetchPetProfile } from '../actions/pet/profile';
 import { useSearchParams } from 'next/navigation';
 import { fetchProvider } from '../actions/pet/provider';
 import { useAccount } from 'wagmi';
+import { Suspense } from 'react';
 
 // Create a separate component for the logic that uses useSearchParams
 function QRPageContent() {
