@@ -101,6 +101,66 @@ export default function ProfileForm({ addr }) {
     },
   });
 
+  const generateImage = async (petImage, prompt) => {
+    const formData = new FormData();
+    formData.append('image', petImage);
+    formData.append('mode', 'image-to-image');
+    formData.append('prompt', prompt);
+    formData.append('output_format', 'png'); // Use PNG for transparency support
+    formData.append('model', 'sd3.5-medium'); // using model SD 3.5 Medium
+    formData.append('strength', 0.5); // Adjust strength (0.1 to 1.0)
+
+    try {
+      const response = await fetch(
+        'https://api.stability.ai/v2beta/stable-image/generate/sd3',
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STABILITY_API_KEY}`,
+            Accept: 'image/*',
+          },
+        }
+      );
+
+      if (response.status !== 200) throw new Error('Image generation failed');
+      const arraybuffer = await response.arrayBuffer();
+      return Buffer.from(arraybuffer); // Generated image buffer
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const removeBgImage = async (imageBuffer) => {
+    const formData = new FormData();
+    formData.append('image', new Blob([imageBuffer]));
+
+    try {
+      const response = await fetch(
+        'https://api.stability.ai/v2beta/stable-image/edit/remove-background',
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STABILITY_API_KEY}`,
+            Accept: 'image/*',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Background removal failed: ${response.statusText}`);
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      return Buffer.from(arrayBuffer); // Return the background-removed image buffer
+    } catch (error) {
+      console.error('Error removing background:', error);
+      throw error;
+    }
+  };
+
   const submitPetIPFS = async (data) => {
     const response = await fetch('/api/ipfs', {
       method: 'POST',
@@ -113,7 +173,8 @@ export default function ProfileForm({ addr }) {
   const submitImageS3 = async (petImage) => {
     try {
       const formData = new FormData();
-      formData.append('petImage', petImage);
+      const blob = new Blob([petImage], { type: 'image/png' });
+      formData.append('petImage', blob);
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
@@ -135,9 +196,10 @@ export default function ProfileForm({ addr }) {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      //from here input stability
-      //and bg remover here before submit to s3
-      const imageURL = await submitImageS3(data.petImage);
+      const prompt = `Authentic 16-bit Pokémon-style pixel art of a ${data.petType} of  ${data.petBreed}, clean blocky shapes, minimal shading, vibrant bold colors, isolated on a transparent background.`;
+      const generatedImageBuffer = await generateImage(data.petImage, prompt);
+      const bgRemovedBuffer = await removeBgImage(generatedImageBuffer);
+      const imageURL = await submitImageS3(bgRemovedBuffer);
       const formData = {
         ...data,
         birthDay: data.birthDay.toISOString(),

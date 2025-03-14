@@ -33,7 +33,7 @@ export async function POST(request) {
 
     // Ensure the file is an image
     const fileType = file.type;
-    if (!fileType.includes('image')) {
+    if (!fileType || !fileType.includes('image')) {
       return NextResponse.json(
         { success: false, error: 'File must be an image' },
         { status: 400 }
@@ -41,7 +41,7 @@ export async function POST(request) {
     }
 
     // Create a unique filename
-    const fileName = `${uuidv4()}-${file.name}`;
+    const fileName = `${uuidv4()}.${fileType.split('/')[1]}`;
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 
     // Configure S3 client

@@ -5,7 +5,7 @@ import { useQRCode } from 'next-qrcode';
 import Link from 'next/link';
 export default function QrBox({ petId }) {
   const { Canvas } = useQRCode();
-  const baseURL = process.env.VERCEL_URL || 'localhost:3000';
+  const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL || 'localhost:3000';
   return (
     <div className="container flex flex-col w-full h-full">
       <div className="w-full flex flex-row items-center justify-start gap-2">
