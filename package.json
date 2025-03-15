@@ -56,6 +56,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
     "@tailwindcss/postcss": "^4.0.9",
     "@types/debug": "^4.1.12",
     "eslint": "^9",
