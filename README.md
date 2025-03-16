@@ -1,5 +1,4 @@
-[logo](https://github.com/user-attachments/assets/ff67b0c6-8e16-4610-9d6d-e4a99684c899)
-
+![Image](https://github.com/user-attachments/assets/ff67b0c6-8e16-4610-9d6d-e4a99684c899)
 ### **Introduction**
 
 **Furo** is a decentralized application (dApp) that leverages Web3 blockchain technology to create **unique, immutable digital profiles** for animals. By combining **Soulbound NFTs (RMRK)**, **AI-generated retro pixel art** , and **decentralized storage (IPFS)**, Furo revolutionizes how pet owners, veterinarians, and animal organizations manage and interact with animal health records and ownership data. This project bridges the gap between the physical and digital worlds, offering a secure, transparent, and user-friendly platform for the global pet care ecosystem.
