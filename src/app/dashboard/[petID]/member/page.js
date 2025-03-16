@@ -17,6 +17,7 @@ export default function MemberPage() {
   const CONTRACT_ADDRESS = petRecordSystem;
   const CONTRACT_ABI = petRecordSystemABI;
   const [petId, setPetId] = useState(null);
+  const [tokenId, setTokenId] = useState(null);
 
   const { writeContractAsync } = useWriteContract();
   const [memberList, setMemberList] = useState([]);
@@ -25,7 +26,9 @@ export default function MemberPage() {
 
   useEffect(() => {
     const id = localStorage.getItem('selectedPetId');
+    const tokenId = localStorage.getItem('tokenId');
     setPetId(id);
+    setTokenId(tokenId);
 
     if (id) {
       const getMembers = async () => {
@@ -65,7 +68,7 @@ export default function MemberPage() {
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: 'removeServiceProvider',
-        args: [providerAddress],
+        args: [providerAddress, tokenId],
       });
 
       const result = await waitForTransactionReceipt(config, { hash });
@@ -91,7 +94,11 @@ export default function MemberPage() {
     <div className="container flex w-full h-full">
       <div className="m-4 px-4 md:px-10 flex flex-col w-full h-full gap-2 bg-[#FFFFFD] rounded-[24px]">
         <Title page={'member'} />
-        <MemberForm petId={petId} onSuccess={refreshMemberList} />
+        <MemberForm
+          petId={petId}
+          onSuccess={refreshMemberList}
+          tokenId={tokenId}
+        />
         <div className="w-full flex flex-col mt-6 items-center justify-center">
           <p className="w-full font-semibold flex items-center justify-center text-lg md:text-xl">
             Member List

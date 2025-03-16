@@ -26,6 +26,7 @@ contract PetRecordSystem is TokenBase, RMRKNestable, RMRKSoulbound, RMRKTokenURI
 	}
 	
 	struct Provider {
+		uint256 petId;
 		bool hasAccess;
 		string name;
 	}
@@ -33,7 +34,7 @@ contract PetRecordSystem is TokenBase, RMRKNestable, RMRKSoulbound, RMRKTokenURI
     mapping (address => Provider) private _providers;
 	mapping (uint256 => Record) public petRecords;
     
-    event ServiceProviderRegistered(address indexed provider, string name);
+    event ServiceProviderRegistered(address indexed provider, string name, uint256 petId);
     event ServiceProviderRemoved(address indexed provider, uint256 timestamp);
     event ChildRecordAdded(uint256 indexed parentId, uint256 indexed childId, Record recordType, address provider);
     event PetOwnershipTransferred(uint256 indexed petId, address indexed from, address indexed to);
@@ -45,24 +46,28 @@ contract PetRecordSystem is TokenBase, RMRKNestable, RMRKSoulbound, RMRKTokenURI
 		_transferOwnership(msg.sender);
 	} 
 
-	function registerServiceProvider(address provider, string memory name) public onlyOwner {
+	function registerServiceProvider(address provider, string memory name, uint256 petId) public {
 		_providers[provider] = Provider({
+			petId: petId,
 			hasAccess: true,
 			name: name
 		});
-        emit ServiceProviderRegistered(provider, name);
+        emit ServiceProviderRegistered(provider, name, petId);
     }
     
-    function removeServiceProvider(address provider) public onlyOwner {
+    function removeServiceProvider(address provider, uint256 petId) public {
+		require(_providers[provider].petId == petId, "Provider not assigned to this pet");
+
 		_providers[provider].hasAccess = false;
         emit ServiceProviderRemoved(provider, block.timestamp);
     }
     
-    function isServiceProvider(address provider) public view returns (bool) {
-        return _providers[provider].hasAccess;
+    function isServiceProvider(address provider, uint256 petId) public view returns (bool) {
+        return _providers[provider].petId == petId && _providers[provider].hasAccess;
     }
     
-    function getProviderName(address provider) public view returns (string memory) {
+    function getProviderName(address provider, uint256 petId) public view returns (string memory) {
+		require(_providers[provider].petId == petId, "Provider not assigned to this pet");
         return _providers[provider].name;
     }
 

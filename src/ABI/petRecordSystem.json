@@ -499,6 +499,12 @@
         "internalType": "string",
         "name": "name",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "petId",
+        "type": "uint256"
       }
     ],
     "name": "ServiceProviderRegistered",
@@ -885,6 +891,11 @@
         "internalType": "address",
         "name": "provider",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "petId",
+        "type": "uint256"
       }
     ],
     "name": "getProviderName",
@@ -966,6 +977,11 @@
         "internalType": "address",
         "name": "provider",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "petId",
+        "type": "uint256"
       }
     ],
     "name": "isServiceProvider",
@@ -1225,6 +1241,11 @@
         "internalType": "string",
         "name": "name",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "petId",
+        "type": "uint256"
       }
     ],
     "name": "registerServiceProvider",
@@ -1256,6 +1277,11 @@
         "internalType": "address",
         "name": "provider",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "petId",
+        "type": "uint256"
       }
     ],
     "name": "removeServiceProvider",

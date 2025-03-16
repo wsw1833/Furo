@@ -196,7 +196,7 @@ export default function ProfileForm({ addr }) {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const prompt = `Authentic 16-bit Pokémon-style pixel art of a ${data.petType} of ${data.petBreed}, minimal shading, vibrant bold colors, isolated on a transparent background.`;
+      const prompt = `Pixel art of a ${data.petType} of ${data.petBreed}, cartoonish 16-bit retro style, clean blocky shapes, minimal shading, vibrant bold colors, isolated on a transparent background.`;
       const generatedImageBuffer = await generateImage(data.petImage, prompt);
       const bgRemovedBuffer = await removeBgImage(generatedImageBuffer);
       const imageURL = await submitImageS3(bgRemovedBuffer);

@@ -28,7 +28,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddMember({ petId, onSuccess }) {
+export default function AddMember({ petId, onSuccess, tokenId }) {
   const CONTRACT_ADDRESS = petRecordSystem;
   const CONTRACT_ABI = petRecordSystemABI;
   const { writeContractAsync } = useWriteContract();
@@ -40,7 +40,7 @@ export default function AddMember({ petId, onSuccess }) {
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: 'registerServiceProvider',
-        args: [provider, name],
+        args: [provider, name, tokenId],
       });
 
       const result = await waitForTransactionReceipt(config, { hash });

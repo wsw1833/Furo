@@ -16,6 +16,7 @@ import { dateFormat } from '@/lib/utils';
 
 export default function Dashboard() {
   const [petId, setPetId] = useState(null);
+  const [tokenId, setTokenId] = useState(null);
   const [profile, setProfile] = useState([]);
   const [recordData, setRecordData] = useState([]);
   const [reminderData, setReminderData] = useState([]);
@@ -44,9 +45,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     const id = localStorage.getItem('selectedPetId');
+    const tokenId = localStorage.getItem('tokenId');
 
     if (id) {
       setPetId(id);
+      setTokenId(tokenId);
       loadPetData(id);
     } else {
       setIsLoading(false);
@@ -68,10 +71,7 @@ export default function Dashboard() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
           ) : (
-            <ActivityPage
-              records={recordData.record || []}
-              display={false}
-            />
+            <ActivityPage records={recordData.record || []} display={false} />
           )}
         </div>
         {/* pet profile */}
